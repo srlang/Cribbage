@@ -29,19 +29,44 @@ right_jack =: 3 : 0 "1
     hand =. }. y
     NB. ind  =. JACK i. values hand
     if. JACK e. values hand do.
-        ind =. JACK i. values hand
+        NB. ind =. JACK i. values hand
         +/ crib = suits hand #~ JACK = values hand return.
     else.
         0 return.
     end.
 )
 
+each_type =: 3 : 0 "1
+    assert. 5 = $ y 
+    adj =. 13 $ 0 
+    for_i. >: i. 13 do.
+        adj =. adj (<:i)}~ +/ i = y
+    end.
+    adj return.
+)
+
+iar =: 0
 runs =: 3 : 0 "1 
-'Invalid hand size' assert 5 = $ y
-NB. sort y
-y =. /:~ y
-NB. if a run of 5 exists, return that.
-NB. TODO: detect runs
+    'Invalid hand size' assert 5 = $ y
+    NB. Thought: Keep track of # of each card.
+    NB. (1 0 1 1 0 0 0 0 2 0 ...)
+    NB. then run through the list and multiply together 
+    NB. for at least 3 in a row. (consider using loop)
+    NB.nums =. each_type y
+    NB.i =. 0
+    iar =: 0
+    count =: 1
+    for_i. each_type y do.
+        if. (0 = i) *. (count > 1) do.
+            break.
+        end.
+        if. 0 < i do.
+            count =: count * i
+            iar =: >: iar
+        end.
+    end.
+    NB.(0:`count"_)@.(iar >: 3)
+    count * (0:`])@.(3 <: ]) iar
 )
 
 FIFTEENS_VALUE =: 2
