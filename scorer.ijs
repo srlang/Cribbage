@@ -54,15 +54,15 @@ runs =: 3 : 0 "1
     NB. for at least 3 in a row. (consider using loop)
     NB.nums =. each_type y
     NB.i =. 0
-    iar =: 0
-    count =: 1
+    iar =. 0
+    count =. 1
     for_i. each_type y do.
         if. (0 = i) *. (count > 1) do.
             break.
         end.
         if. 0 < i do.
-            count =: count * i
-            iar =: >: iar
+            count =. count * i
+            iar =. >: iar
         end.
     end.
     NB.(0:`count"_)@.(iar >: 3)
@@ -71,7 +71,22 @@ runs =: 3 : 0 "1
 
 FIFTEENS_VALUE =: 2
 fifteens =: 3 : 0 "1
-
+    NB. Think change-maker
+    NB. sort down
+    y =. \:~ y
+    count =. 0
+    while. $ y do.
+        first =. {. y
+        rest  =. }. y
+        while. $ rest do.
+            f =. ''
+            NB. TODO: Really need to re-think how to do this
+            NB. algorithm will work. How I do this in J is 
+            NB. the question that needs to be answered.
+        end.
+        y =. rest
+    end.
+    count return.
 )
 
 PAIRS_VALUE =: 2
