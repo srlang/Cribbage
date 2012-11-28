@@ -63,8 +63,6 @@ int * sort_up(int * hand[]) {
 }
 
 int pairs(int * hand[]) {
-    /*int * hand_s = sort_up(hand);
-    int count = 0;*/
     int count = 0;
     for(int i = 0; i < TOTAL_SIZE; i++) {
         for(int j = i; j < TOTAL_SIZE; j++) {

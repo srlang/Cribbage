@@ -68,6 +68,12 @@ runs =: 3 : 0 "1
     count * (0:`])@.(3 <: ]) iar
 )
 
+NB. Fifteens calculator outline:
+NB.     - Sort in descending order
+NB.     - grab largest,
+NB.         - subtract value of largest from 15
+NB.         - grab next largest as long as +/ < 15
+NB.     - recur starting w/ second largest
 FIFTEENS_VALUE =: 2
 fifteens =: 3 : 0 "1
     NB. Think change-maker
