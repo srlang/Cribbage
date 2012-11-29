@@ -3,6 +3,14 @@
  * Copyright Sean R. Lang
  */
 
+/*
+ * TODO: Question:
+ *  - Does int * hand[] mean multi-dimensional
+ *      array, or does it mean pointer to an 
+ *      int[].
+ *  - More importantly, how will the executed 
+ *      code behave in either option?
+ */
 #include "scorer.h"
 #include <stdlib.h>
 
@@ -14,10 +22,11 @@
 #define TOTAL_SIZE      5
 #define CRIB_LOCATION   4
 int right_jack(int * hand[]) {
-    int crib = *hand[CRIB_LOCATION];
+    int * _hand = *hand;
+    int crib = _hand[CRIB_LOCATION];
     for(int i = 0; i < HAND_SIZE; i++) {
-        if (value(*hand[i]) == Jack && 
-                (suit(*hand[i]) == suit(crib))) {
+        if (value(_hand[i]) == Jack && 
+                (suit(_hand[i]) == suit(crib))) {
             return 1;
         }
     }
@@ -26,9 +35,10 @@ int right_jack(int * hand[]) {
 
 
 int runs(int * hand[]) {
+    int * _hand = *hand;
     int each_type[NUM_TYPES];
     for(int i = 0; i < TOTAL_SIZE; i++) {
-        each_type[*hand[i] - 1]++;
+        each_type[_hand[i] - 1]++;
     }
     int iar = 0;
     int count = 1;
@@ -44,38 +54,47 @@ int runs(int * hand[]) {
 }
 
 int * sort_up(int * hand[]) {
+    int * _hand = *hand;
     /* selection sort, because there's only a few items */
     int min;
     for (int j = 0; j < TOTAL_SIZE - 1; j++) {
         min = j;
         for(int i = j+1; i < TOTAL_SIZE; i++) {
-            if (*hand[i] < *hand[min])
+            if (_hand[i] < _hand[min])
                 min = i;
         }
 
         if (min != j) {
             /* swap a[j], a[min] */
-            int t = *hand[j];
-            *hand[j] = *hand[min];
-            *hand[min] = t;
+            int t = _hand[j];
+            _hand[j] = _hand[min];
+            _hand[min] = t;
         }
     }
+    return _hand;
 }
 
+/*
+ * Function to determine how many pairs are in the 
+ * given hand.
+ */
 int pairs(int * hand[]) {
+    int * _hand = *hand;
     int count = 0;
     for(int i = 0; i < TOTAL_SIZE; i++) {
         for(int j = i; j < TOTAL_SIZE; j++) {
-            count += *hand[i] == *hand[j];
+            count += _hand[i] == _hand[j];
         }
     }
     return count;
 }
 
+//TODO: Implementation
 int * sort_down(int * hand[]) {
     return hand[0];
 }
 
+//TODO: Implementation
 int fifteens(int * hand[]) {
-    
+    return 0;   
 }

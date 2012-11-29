@@ -1,4 +1,5 @@
-#!/bin/j7console
+NB. #!/bin/j7console
+NB. Not executable, don't need/want above line.
 
 NB. Sean R. Lang
 NB. Cribbage Scorer Script.
@@ -78,20 +79,32 @@ FIFTEENS_VALUE =: 2
 fifteens =: 3 : 0 "1
     NB. Think change-maker
     NB. sort down
+NB.    y =. \:~ y
+NB.    count =. fifteens_r y
+NB.    while. $ y do.
+NB.        first =. {. y
+NB.        rest  =. }. y
+NB.        while. $ rest do.
+NB.            f =. ''
+NB.            NB. TODO: Really need to re-think how to do this
+NB.            NB. algorithm will work. How I do this in J is 
+NB.            NB. the question that needs to be answered.
+NB.        end.
+NB.        y =. rest
+NB.    end.
+NB.    count return.
+    fifteens_r y
+)
+
+fifteens_r =: 3 : 0 
+    if. -. $ y do. 0 return. end.
+    NB. sort down
     y =. \:~ y
-    count =. 0
-    while. $ y do.
-        first =. {. y
-        rest  =. }. y
-        while. $ rest do.
-            f =. ''
-            NB. TODO: Really need to re-think how to do this
-            NB. algorithm will work. How I do this in J is 
-            NB. the question that needs to be answered.
-        end.
-        y =. rest
-    end.
-    count return.
+    fif =. 0
+    f =. {. y
+    rest =. }. y
+    NB. TODO: add actual calculation at this point
+    fif + fifteens_r rest
 )
 
 PAIRS_VALUE =: 2
