@@ -54,15 +54,19 @@ runs =: 3 : 0 "1
     NB. for at least 3 in a row. (consider using loop)
     NB.nums =. each_type y
     NB.i =. 0
-    iar =. 0
+    iar   =. 0
     count =. 1
     for_i. each_type y do.
-        if. (0 = i) *. (count > 1) do.
+        if. (0 = i) *. (iar >: 3) do.
             break.
+        elseif. 0 = i do.
+            NB. reset values if we hit a 0 after < 3 in a row.
+            count =. 1
+            iar   =. 0
         end.
-        if. 0 < i do.
+        if. i > 0 do.
             count =. count * i
-            iar =. >: iar
+            iar   =. >: iar
         end.
     end.
     NB.(0:`count"_)@.(iar >: 3)
@@ -93,7 +97,17 @@ NB.        end.
 NB.        y =. rest
 NB.    end.
 NB.    count return.
-    fifteens_r y
+    if. 15 <: +/ y do.
+        15 = +/ y return.
+    end.
+    while. $y do.
+        first =. {. y
+        rest  =. }. y
+        val_left =. 15 - first
+        NB. TODO: This.
+        y =. rest
+    end.
+    NB.fifteens_r y
 )
 
 fifteens_r =: 3 : 0 

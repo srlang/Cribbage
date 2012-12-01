@@ -10,17 +10,26 @@
  *      int[].
  *  - More importantly, how will the executed 
  *      code behave in either option?
+ * Doesn't matter, fixed by dereferencing first
+ *  and "storing" the array locally. (at least, I hope)
  */
 #include "scorer.h"
 #include <stdlib.h>
 
+/* Values for each given possible score of the hand. */
 #define PAIRS_VALUE     2
 #define FIFTEENS_VALUE  2
 #define RIGHT_JACK_VAL  1
 
+/* Basic information about the cribbage hand. */
 #define HAND_SIZE       4
 #define TOTAL_SIZE      5
 #define CRIB_LOCATION   4
+
+/*
+ * Function to determine whether the hand should get 
+ * an extra point for having the right jack.
+ */
 int right_jack(int * hand[]) {
     int * _hand = *hand;
     int crib = _hand[CRIB_LOCATION];
@@ -34,6 +43,7 @@ int right_jack(int * hand[]) {
 }
 
 
+/* Method to find and return the number of runs available. */
 int runs(int * hand[]) {
     int * _hand = *hand;
     int each_type[NUM_TYPES];
@@ -45,6 +55,8 @@ int runs(int * hand[]) {
     for(int i = 0; i < NUM_TYPES; i++) {
         if (each_type[i] == 0 && count > 1) {
             break;
+        } else if (each_type[i] == 0) {
+            count = 0;
         }
         if (each_type[i] > 0) {
             count *= each_type[i];
@@ -53,6 +65,7 @@ int runs(int * hand[]) {
     return iar < 3 ? 0 : count * iar;
 }
 
+/* Helper method to sort the hand in ascending order. */
 int * sort_up(int * hand[]) {
     int * _hand = *hand;
     /* selection sort, because there's only a few items */
@@ -91,10 +104,12 @@ int pairs(int * hand[]) {
 
 //TODO: Implementation
 int * sort_down(int * hand[]) {
-    return hand[0];
+    return *hand;
 }
 
 //TODO: Implementation
+//See the commentary in ../J/scorer.ijs for more
+//information on how this should work.
 int fifteens(int * hand[]) {
     return 0;   
 }
