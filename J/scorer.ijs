@@ -1,7 +1,8 @@
-NB. #!/bin/j7console
-NB. Not executable, don't need/want above line.
+NB. scorer.ijs -- part of the J implementation of the cribbage scorer.
+NB. Copyright 2012 Sean R. Lang
+NB. See README and LICENSE for more information.
 
-NB. Sean R. Lang
+
 NB. Cribbage Scorer Script.
 NB.
 NB. This script exists to score a hand of cribbage.

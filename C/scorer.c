@@ -1,6 +1,7 @@
 /*
- * scorer.c 
- * Copyright Sean R. Lang
+ * scorer.c -- Part of the cribbage scorer program, C implementation.
+ * Copyright 2012 Sean R. Lang
+ * See README and LICENSE for more information.
  */
 
 /*

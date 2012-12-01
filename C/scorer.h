@@ -1,3 +1,9 @@
+/*
+ * scorer.h -- part of the cribbage scorer program, C implementation.
+ * Copyright 2012 Sean R. Lang
+ * See README and LICENSE for more information.
+ */
+
 #ifndef SCORER_H
 #define SCORER_H
 
