@@ -22,6 +22,8 @@ NB. verb to determine the suits of the hand of cards
 suits =: 4&|
 NB. verb to determine the value of the cards (2, Jack, etc.)
 values =: <.@(%&12)
+NB. verb to get the numerical value of the card
+num_val =: (10"_`])@.10&< 
 
 
 JACK =: 11
@@ -95,14 +97,22 @@ NB.            NB. TODO: Really need to re-think how to do this
 NB.            NB. algorithm will work. How I do this in J is 
 NB.            NB. the question that needs to be answered.
 NB.        end.
-NB.        y =. rest
-NB.    end.
+NB.        y =. res.
 NB.    count return.
+
+NB. TODO
+NB. found a glaring issue
+NB. repeat values in the middle of the hand
+NB. e.g. 9 5 5 1 1 will only count as two 15's instead of
+NB. 4 as should happen. And even that is b/c i'm counting 
+NB. the number of each on the last possible card. 
+NB. possible fix could be to make a recursive verb to 
+NB. count the number of possibilities that the cards sum up
+NB. to a given value. i.e. 
+NB.     x poss_sums y
     'Invalid hand size' assert 5 = $ y
-    y =. \:~ y
-    if. 15 <: +/ y do.
-        15 = +/ y return.
-    end.
+    y =. \:~ values y
+    if. 15 <: +/ y do. 15 = +/ y return. end.
     count =. 0
     for_first. y do.
         rest =. y }.~ >:first_index
