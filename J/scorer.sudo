@@ -1,0 +1,10 @@
+/*
+ * psuedo-code for the scorer functions,
+ * more specifically, this is for the fifteens 
+ * scoring algorithm
+ */
+
+fifteens(int[0,4] hand) {
+    count = 0
+    
+}

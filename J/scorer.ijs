@@ -14,7 +14,7 @@ NB. The verbs below implicitly assume that the cards
 NB. are organized using the values 0 through 12 to 
 NB. recognize Aces through Kings. The exception to 
 NB. this rule is the right_jack verb which will take 
-NB. the classic 0-51 values, where >.@(%&12) gives 
+NB. the classic 1-52 values, where >.@(%&12) gives 
 NB. the card value and 4&| gives the suit.
 
 
@@ -98,17 +98,27 @@ NB.        end.
 NB.        y =. rest
 NB.    end.
 NB.    count return.
+    'Invalid hand size' assert 5 = $ y
+    y =. \:~ y
     if. 15 <: +/ y do.
         15 = +/ y return.
     end.
-    while. $y do.
-        first =. {. y
-        rest  =. }. y
-        val_left =. 15 - first
-        NB. TODO: This.
-        y =. rest
+    count =. 0
+    for_first. y do.
+        rest =. y }.~ >:first_index
+        remaining =. 15 - first
+        for_eachrest. rest do.
+            if. 0 <: remaining - each_rest do.
+                remaining =. remaining - each_rest
+            end.
+            if. 0 = remaining do.
+                count =. count + (<:eachrest) { each_type y
+            end.
+            NB. TODO: Check to make sure this works.
+            NB. hint: it doesn't
+        end.
     end.
-    NB.fifteens_r y
+    count return.
 )
 
 fifteens_r =: 3 : 0 
