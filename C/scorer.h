@@ -26,8 +26,14 @@ int suit(int card) {
 
 /* Find the type (Ace - King) of the given card. */
 #define NUM_TYPES   12
-int value(int card) {
+int type(int card) {
     return card / NUM_TYPES;
+}
+
+/* Find the numerical value of the card (for counting to 15). */
+int value(int card) {
+    int div = card / NUM_TYPES
+    return div > 10 ? 10 : div;
 }
 
 #endif

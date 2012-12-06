@@ -32,11 +32,11 @@
  * an extra point for having the right jack.
  */
 int right_jack(int * hand[]) {
-    int * _hand = *hand;
-    int crib = _hand[CRIB_LOCATION];
+    //int * _hand = *hand;
+    int crib = (*hand)[CRIB_LOCATION];
     for(int i = 0; i < HAND_SIZE; i++) {
-        if (value(_hand[i]) == Jack && 
-                (suit(_hand[i]) == suit(crib))) {
+        if ( value((*hand)[i]) == Jack && 
+                (suit((*hand)[i]) == suit(crib)) ) {
             return 1;
         }
     }
@@ -46,10 +46,10 @@ int right_jack(int * hand[]) {
 
 /* Method to find and return the number of runs available. */
 int runs(int * hand[]) {
-    int * _hand = *hand;
+    //int * _hand = *hand;
     int each_type[NUM_TYPES];
     for(int i = 0; i < TOTAL_SIZE; i++) {
-        each_type[_hand[i] - 1]++;
+        each_type[(*hand)[i] - 1]++;
     }
     int iar = 0;
     int count = 1;
@@ -97,7 +97,7 @@ int pairs(int * hand[]) {
     int count = 0;
     for(int i = 0; i < TOTAL_SIZE; i++) {
         for(int j = i; j < TOTAL_SIZE; j++) {
-            count += _hand[i] == _hand[j];
+            count += (*hand)[i] == (*hand)[j];
         }
     }
     return count;
