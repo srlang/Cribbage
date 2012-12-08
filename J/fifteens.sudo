@@ -5,6 +5,23 @@
  */
 
 fifteens(int[0,4] hand) {
-    count = 0
-    
+    count = 0;
+    hand = sort_down(hand);
+    for(int i = 0; i < hand.size - 1; i++) {
+        remaining = 15 - hand[i];
+        poss_count = 0;
+        for(int j = i+1; j < hand.size; j++) {
+            if (remaining - hand[j] >= 0) {
+                remaining -= hand[j];
+            }
+            if (remaining == 0) {
+                count += number_of_each(hand[j], hand);
+            } else if (number_of_each(hand[j], hand) > 1
+                    && hand[j] < ) {
+                //TODO: Figure out what I was doing here.
+                //
+                poss_count += 
+            }
+        }
+    }
 }
