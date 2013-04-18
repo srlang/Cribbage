@@ -1,6 +1,19 @@
 NB. scorer.ijs -- part of the J implementation of the cribbage scorer.
-NB. Copyright 2012 Sean R. Lang
-NB. See README and LICENSE for more information.
+NB. Copyright (C) 2012      Sean R. Lang
+NB.
+NB. This program is free software: you can redistribute it and/or modify
+NB. if under the terms of the GNU General Public License as published by
+NB. the Free Software Foundation, either version 3 of the License, or 
+NB. (at your option) any later version.
+NB.
+NB. This program is distributed in the hope that it will be useful,
+NB. but WITHOUT ANY WARRANTY; without even the implied warranty of 
+NB. MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+NB. GNU General Public License for more details.
+NB.
+NB. You should have received a copy of the GNU General Public License
+NB. along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 
 
 NB. Cribbage Scorer Script.
