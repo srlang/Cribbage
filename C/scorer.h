@@ -20,20 +20,13 @@ typedef enum Suits {
 
 /* Find the suit of the given card. */
 #define NUM_SUITS   4
-int suit(int card) {
-    return card % NUM_SUITS;
-}
+int suit(int card);
 
 /* Find the type (Ace - King) of the given card. */
 #define NUM_TYPES   12
-int type(int card) {
-    return card / NUM_TYPES;
-}
+int type(int card);
 
 /* Find the numerical value of the card (for counting to 15). */
-int value(int card) {
-    int div = card / NUM_TYPES
-    return div > 10 ? 10 : div;
-}
+int value(int card); 
 
 #endif
