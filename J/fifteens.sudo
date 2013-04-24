@@ -30,6 +30,7 @@ fifteens(int[0,4] hand) {
     hand = sort(hand);
     if (sum(hand, 0, 4) < 15)
         return 0;
+    overall_used =: hand.size $ 0
     for(i = 0; i < hand.size && sum(hand, i, hand.size-1) >= 15; i++) {
         int total = 15 - hand[i];
         for(j = i+1; i < hand.size; i++) {
