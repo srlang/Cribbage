@@ -1,4 +1,6 @@
 NB. scorer.ijs -- part of the J implementation of the cribbage scorer.
+NB. Used for determining the score of a single player's (at a time)
+NB. hand in a game of cribbage.
 NB. Copyright (C) 2012      Sean R. Lang
 NB.
 NB. This program is free software: you can redistribute it and/or modify
@@ -16,6 +18,7 @@ NB. along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 
+NB. =====================================================================
 NB. Cribbage Scorer Script.
 NB.
 NB. This script exists to score a hand of cribbage.
@@ -29,15 +32,16 @@ NB. recognize Aces through Kings. The exception to
 NB. this rule is the right_jack verb which will take 
 NB. the classic 1-52 values, where >.@(%&12) gives 
 NB. the card value and 4&| gives the suit.
+NB. =====================================================================
 
 
+
+NB. Helper verbs to use throughout the other verbs contained herein.
 NB. verb to determine the suits of the hand of cards
 suits =: 4&|
 NB. verb to determine the value of the cards (2, Jack, etc.)
-NB.values =: <.@(%&12)
 values =: <.@(%&4)
 NB. verb to get the numerical value of the card
-NB. num_val =: (10"_`])@.10&< 
 num_val =: 10 <. >:@values
 
 
@@ -45,22 +49,14 @@ NB. Monad. y: hand
 NB. Determine if the given hand should receive an extra point 
 NB. because it has a right-jack scenario.
 JACK =: 10
+RIGHT_JACK =: right_jack
 right_jack =: 3 : 0 "1
     'Invalid hand size' assert 5 = $ y
-    crib =: suits {: y
+    crib =. suits {: y
     hand =. }: y
-    NB. ind  =. JACK i. values hand
-    NB.if. JACK e. values hand do.
-    NB.    NB. ind =. JACK i. values hand
-    NB.    +/ crib = suits hand #~ JACK = values hand return.
-    NB.else.
-    NB.    0 return.
-    NB.end.
     +/ crib = suits hand #~ JACK = values hand return.
 )
 
-NB. Honestly, I forgot to comment this and have already forgotten
-NB. what it does. I will attempt to reverse engineer it below.
 NB. Monad. y: hand
 NB. Determines how many of each type of card (Jack, Queen, etc.) 
 NB. is present in the given hand.
@@ -77,6 +73,7 @@ each_type =: 3 : 0 "1
 NB. Monad. y: hand
 NB. Determine how many runs--and of what size--are present in 
 NB. the given hand.
+RUNS =: runs
 runs =: 3 : 0 "1 
     'Invalid hand size' assert 5 = $ y
     NB. Thought: Keep track of # of each card.
@@ -104,6 +101,7 @@ runs =: 3 : 0 "1
     count * (0:`])@.(3 <: ]) iar
 )
 
+NB. TODO: All fifteens calcaltions done here.
 NB. Fifteens calculator outline:
 NB.     - Sort in descending order
 NB.     - grab largest,
@@ -158,6 +156,7 @@ NB.     x poss_sums y
     end.
     count return.
 )
+FIFTEENS =: FIFTEENS_VALUE * fifteens
 
 fifteens_r =: 3 : 0 
     if. -. $ y do. 0 return. end.
@@ -170,6 +169,9 @@ fifteens_r =: 3 : 0
     fif + fifteens_r rest
 )
 
+NB. Monad. y: hand
+NB. Determine the number of unique pairs found in a 
+NB. single cribbage hand.
 PAIRS_VALUE =: 2
 pairs =: 3 : 0 "1
     NB. make sure there are 5 cards per hand
@@ -188,4 +190,12 @@ pairs =: 3 : 0 "1
     end.
     NB. above algorithm will count each pair twice.
     -: count return.
+)
+PAIRS =: PAIRS_VALUE * pairs
+
+NB. Monad. y: hand
+NB. Calculates the score for a given hand.
+score =: 3 : 0 "1
+    'Invalid hand size' assert 5 = $y
+    (FIFTEENS + PAIRS + RUNS + RIGHT_JACK) y
 )
