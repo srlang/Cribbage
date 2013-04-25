@@ -34,34 +34,49 @@ NB. the card value and 4&| gives the suit.
 NB. verb to determine the suits of the hand of cards
 suits =: 4&|
 NB. verb to determine the value of the cards (2, Jack, etc.)
-values =: <.@(%&12)
+NB.values =: <.@(%&12)
+values =: <.@(%&4)
 NB. verb to get the numerical value of the card
-num_val =: (10"_`])@.10&< 
+NB. num_val =: (10"_`])@.10&< 
+num_val =: 10 <. >:@values
 
 
-JACK =: 11
+NB. Monad. y: hand
+NB. Determine if the given hand should receive an extra point 
+NB. because it has a right-jack scenario.
+JACK =: 10
 right_jack =: 3 : 0 "1
     'Invalid hand size' assert 5 = $ y
     crib =: suits {: y
-    hand =. }. y
+    hand =. }: y
     NB. ind  =. JACK i. values hand
-    if. JACK e. values hand do.
-        NB. ind =. JACK i. values hand
-        +/ crib = suits hand #~ JACK = values hand return.
-    else.
-        0 return.
-    end.
+    NB.if. JACK e. values hand do.
+    NB.    NB. ind =. JACK i. values hand
+    NB.    +/ crib = suits hand #~ JACK = values hand return.
+    NB.else.
+    NB.    0 return.
+    NB.end.
+    +/ crib = suits hand #~ JACK = values hand return.
 )
 
+NB. Honestly, I forgot to comment this and have already forgotten
+NB. what it does. I will attempt to reverse engineer it below.
+NB. Monad. y: hand
+NB. Determines how many of each type of card (Jack, Queen, etc.) 
+NB. is present in the given hand.
 each_type =: 3 : 0 "1
     assert. 5 = $ y 
+    y =. values y
     adj =. 13 $ 0 
-    for_i. >: i. 13 do.
-        adj =. adj (<:i)}~ +/ i = y
+    for_i. i. 13 do.
+        adj =. adj (i)}~ +/ i = y
     end.
     adj return.
 )
 
+NB. Monad. y: hand
+NB. Determine how many runs--and of what size--are present in 
+NB. the given hand.
 runs =: 3 : 0 "1 
     'Invalid hand size' assert 5 = $ y
     NB. Thought: Keep track of # of each card.
@@ -160,7 +175,8 @@ pairs =: 3 : 0 "1
     NB. make sure there are 5 cards per hand
     'Invalid hand size' assert 5 = $y
     NB. sort y
-    y =. /:~ y
+    NB.y =. /:~ y
+    y =. /:~ values y
     count =. 0
     NB. rotate y as long as it is not the original list
     orig =. y
