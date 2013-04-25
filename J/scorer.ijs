@@ -28,10 +28,11 @@ NB. you know if there is one.
 NB.
 NB. The verbs below implicitly assume that the cards
 NB. are organized using the values 0 through 12 to 
-NB. recognize Aces through Kings. The exception to 
-NB. this rule is the right_jack verb which will take 
-NB. the classic 1-52 values, where >.@(%&12) gives 
-NB. the card value and 4&| gives the suit.
+NB. recognize Aces through Kings. Regardless, all hands
+NB. will be fed to the verbs as values 0-51 to allow an 
+NB. enumerator to find all possible unique hands. Also,
+NB. the right_jack monad requires a suit designation to be
+NB. of any use.
 NB. =====================================================================
 
 
