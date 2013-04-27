@@ -70,15 +70,33 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
 
     for(int i=get_next(asn, lock_a); i<NUM_CARDS_S; i=get_next(asn, lock_a)) {
 
-        for (int j = 0; j < NUM_CARDS_S; j++) 
-            for (int k = 0; k < NUM_CARDS_S; k++) 
-                for(int l = 0; l < NUM_CARDS_S; l++) 
+        for (int j = 0; j < NUM_CARDS_S; j++) {
+            if (i == j)
+                continue;
+            for (int k = 0; k < NUM_CARDS_S; k++) {
+                if (i == k || j == k)
+                    continue;
+                for(int l = 0; l < NUM_CARDS_S; l++) {
+                    if (i == l || j == l || k == l)
+                        continue;
                     for(int c = 0; c < NUM_CARDS_S; c++) {
+                        //make sure there are no duplicates
+                        /*if (i == j || i == k || i == l || i == c
+                                || j == k || j == l || j == c
+                                || k == l || k == c || l ==c)  {
+                            //duplicates present: do nothing
+                        } else {*/
+                        if (i == c || j == c || k == c || l == c) 
+                            continue;
+                        //no duplicates: valid hand for printing
                         sem_wait(lock_o);
                         fprintf(out,  "%i %i %i %i %i\n", i, j, k, l, c);
                         sem_post(lock_o);
+                        //}
                     }
-
+                }
+            }
+        }
     }
 }
 
