@@ -27,11 +27,40 @@
 #endif
 
 
+/* Number of cards to loop through */
 #define NUM_CARDS       52
 #define NUM_CARDS_S     30
 
+/*
+ * Number of threads to create and use
+ * Only defined if not included in compile flags
+ */
+#ifndef THREAD_COUNT
+# define THREAD_COUNT   10
+#endif
+#define SHARE_INTRA     0
+#define SHARE_INTER     1
+
+/* Function prototypes */
 void enumerate(FILE * outfile);
 void enum_safe(FILE * outfile);
+//void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a);
+void thread_enum_safe(FILE *, sem_t *, assg_t *, sem_t *);
+
+/* Typedefs and stuff */
+typedef struct assigner {
+    int indx;
+} assg_t;
+
+typedef struct thread_arg {
+    FILE * out;
+    sem_t * o_lock;
+    assg_t * assg;
+    sem_t * a_lock;
+} targ_t;
+
+#define BEGINNING_ASSIGNER  {.indx = 0}
+
 
 
 #endif /* _ENUMERATE_H_ */
