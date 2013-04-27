@@ -66,6 +66,10 @@ int get_next(assg_t *asn, sem_t *lock) {
     return ret;
 }
 
+card_t get_next_bin(assg_t *asn, sem_t *lock) {
+    return (card_t) (0xFF & get_next(asn, lock));
+}
+
 void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
 
     for(int i=get_next(asn, lock_a); i<NUM_CARDS_S; i=get_next(asn, lock_a)) {
@@ -98,6 +102,15 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
             }
         }
     }
+}
+
+void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
+    for (card_t i = get_next_bin(asn, a); i < NUM_CARDS; i = get_next_bin(asn, a)) {
+        for (card_t j = 0; j < NUM_CARDS; j++) {
+            //TODO: Fill in rest
+        }
+    }
+
 }
 
 
