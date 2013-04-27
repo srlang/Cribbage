@@ -1,6 +1,9 @@
 Cribbage Scorer
 Copyright (C) 2012 Sean R. Lang
 
+---------------------------------------------------------------------------
+
+
 This program is free software: you can redistribute it and/or modify 
 it under the terms of the GNU General Public License as published by 
 the Free Software Foundation, either version 3 of the License, or 
@@ -15,9 +18,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-----------------------------------------------------
+---------------------------------------------------------------------------
 
 
-This is a set of simple scripts that I am using to develop a scorer for a Cribbage game. The point of making the scorer was to either prove or disprove the existence of a 19-hand.
+This is a set of simple scripts that I am using to develop a scorer for a
+Cribbage game. The point of making the scorer was to either prove or disprove
+the existence of a 19-hand.
 
-It is an old family joke that a 19-hand doesn't exist. It came to me one night when I could not sleep that I could solve this problem using J in a fairly simple way, rather than just looking it up on the internet. To clarify, by "old family joke," I mean "something my grandmother said once and others backed up."
+It is an old family joke that a 19-hand doesn't exist. It came to me one night 
+when I could not sleep that I could solve this problem using J in a fairly 
+simple way, rather than just looking it up on the internet. To clarify, by "old 
+family joke," I mean "something my grandmother said once and others backed up."
+
+
+---------------------------------------------------------------------------
