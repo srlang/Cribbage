@@ -38,6 +38,10 @@ void enumerate(FILE * outfile) {
                         fprintf(outfile,  "%i %i %i %i %i\n", i, j, k, l, c);
 }
 
+/* 
+ * Begin the enumeration process but with less output to avoid locking 
+ * the system up with too much computation. 
+ */
 void enum_safe(FILE * outfile) {
     for (int i = 0; i < NUM_CARDS_S; i++) 
         for (int j = 0; j < NUM_CARDS_S; j++) 
@@ -48,11 +52,20 @@ void enum_safe(FILE * outfile) {
 }
 
 
+/* Actually execute the enumerator functionality. */
 int main(int argc, char * argv[]) {
 #   ifdef DEBUG_ENUMERATE
     enum_safe(stdout);
 #   else
-
+    FILE * stream = stdout;
+    if (argc > 1) {
+        FILE * s = fopen(argv[1], "w+");
+        if (s)
+            stream = s;
+        else 
+            perror("Cannot open file.");
+    } 
+    enumerate(stream);
 #   endif
     return 0;
 }

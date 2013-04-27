@@ -28,7 +28,7 @@
 
 
 #define NUM_CARDS       52
-#define NUM_CARDS_S     20
+#define NUM_CARDS_S     30
 
 void enumerate(FILE * outfile);
 void enum_safe(FILE * outfile);
