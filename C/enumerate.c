@@ -89,7 +89,6 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
                         sem_wait(lock_o);
                         fprintf(out,  "%i %i %i %i %i\n", i, j, k, l, c);
                         sem_post(lock_o);
-                        //}
                     }
                 }
             }
