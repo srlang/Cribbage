@@ -157,6 +157,7 @@ NB.     x poss_sums y
     end.
     count return.
 )
+fifteens =: 0: 
 FIFTEENS =: FIFTEENS_VALUE * fifteens
 
 fifteens_r =: 3 : 0 
