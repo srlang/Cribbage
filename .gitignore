@@ -1,5 +1,5 @@
 *.swp
 C/enumerate
 C/scorer
-hands.txt
+hands*.txt
 hands*.dat
