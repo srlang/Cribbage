@@ -29,7 +29,7 @@
 
 /* Number of cards to loop through */
 #define NUM_CARDS       52
-#define NUM_CARDS_S     25
+#define NUM_CARDS_S     52
 
 /*
  * Number of threads to create and use
