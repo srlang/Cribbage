@@ -58,7 +58,7 @@ typedef struct thread_arg {
 typedef unsigned char card_t;
 
 typedef struct hand {
-    card_t[4] cards;
+    card_t cards[4];
     card_t crib;
 } hand_t;
 
@@ -70,6 +70,7 @@ void enumerate(FILE * outfile);
 void enum_safe(FILE * outfile);
 //void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a);
 void thread_enum_safe(FILE *, sem_t *, assg_t *, sem_t *);
+void thread_enum_bin(FILE *, sem_t *, assg_t *, sem_t *);
 
 
 

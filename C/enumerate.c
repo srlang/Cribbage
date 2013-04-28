@@ -105,9 +105,27 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
 }
 
 void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
-    for (card_t i = get_next_bin(asn, a); i < NUM_CARDS; i = get_next_bin(asn, a)) {
+    for (card_t i=get_next_bin(asn,a); i<NUM_CARDS; i=get_next_bin(asn,a)) {
         for (card_t j = 0; j < NUM_CARDS; j++) {
-            //TODO: Fill in rest
+            if (i == j)
+                continue;
+            for (card_t k = 0; j < NUM_CARDS; k++) {
+                if (i == k || j == k)
+                    continue;
+                for (card_t l = 0; l < NUM_CARDS; l++) {
+                    if (i == l || j == l || k == l)
+                        continue;
+                    for (card_t c = 0; c < NUM_CARDS; c++) {
+                        if (i == c || j == c || k == c || l == c) 
+                            continue;
+                        hand_t hand = {.cards[0] = i, .cards[1] = j,
+                            .cards[2] = k, .cards[3] = l, .crib=c};
+                        sem_wait(f);
+                        fwrite(&hand, sizeof(hand), 1, out);
+                        sem_post(f);
+                    }
+                }
+            }
         }
     }
 
@@ -120,37 +138,54 @@ void * thread_handler_s(void * args) {
     return NULL;
 }
 
+void * thread_handler_b(void * args) {
+    targ_t * arg = (targ_t *) args;
+    thread_enum_bin(arg->out, arg->o_lock, arg->assg, arg->a_lock);
+    return NULL;
+}
+
 
 
 /* Actually execute the enumerator functionality. */
 int main(int argc, char * argv[]) {
-#   ifdef DEBUG_ENUMERATE
-    //enum_safe(stdout);
-    pthread_t threads[THREAD_COUNT];
-    sem_t out_lock, assign_lock;
-    sem_init(&out_lock, SHARE_INTRA, 1);
-    sem_init(&assign_lock, SHARE_INTRA, 1);
-    assg_t assigner = BEGINNING_ASSIGNER;
-    targ_t args = {stdout, &out_lock, &assigner, &assign_lock};
-    for (int i = 0; i < THREAD_COUNT; i++) {
-        pthread_create(&threads[i], NULL,  thread_handler_s, &args);
-    }
-
-    for (int i = 0; i < THREAD_COUNT; i++) {
-        pthread_join(threads[i], NULL);
-    }
-    
-#   else
+    //figure out where we will be writing the data to
     FILE * stream = stdout;
     if (argc > 1) {
         FILE * s = fopen(argv[1], "w+");
+        //fail if the file has not be opened
         if (s)
             stream = s;
         else 
             perror("Cannot open file.");
-    } 
-    enumerate(stream);
+    }
+    
+    //create threads and semaphores
+    pthread_t threads[THREAD_COUNT];
+    sem_t out_lock, assign_lock;
+    sem_init(&out_lock, SHARE_INTRA, 1);
+    sem_init(&assign_lock, SHARE_INTRA, 1);
+    //create the assigner
+    assg_t assigner = BEGINNING_ASSIGNER;
+    //create the arguments structure to pass to the threads
+    targ_t args = {stream, &out_lock, &assigner, &assign_lock};
+
+#   ifdef DEBUG_ENUMERATE
+    for (int i = 0; i < THREAD_COUNT; i++) {
+        pthread_create(&threads[i], NULL,  thread_handler_b, &args);
+    }
+#   else
+    for (int i = 0; i < THREAD_COUNT; i++) {
+        pthread_create(&threads[i], NULL, thread_handler_s, &args);
+    }
+    //enumerate(stream);
 #   endif
+
+    //join the threads
+    for (int i = 0; i < THREAD_COUNT; i++) {
+        pthread_join(threads[i], NULL);
+    }
+    
+    //exit value
     return 0;
 }
 
