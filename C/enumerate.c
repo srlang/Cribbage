@@ -72,22 +72,17 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
 
     for(int i=get_next(asn, lock_a); i<NUM_CARDS_S; i=get_next(asn, lock_a)) {
 
-        for (int j = i; j < NUM_CARDS_S; j++) {
-            if (i == j)
-                continue;
-            for (int k = j; k < NUM_CARDS_S; k++) {
-                if (i == k || j == k)
-                    continue;
-                for(int l = k; l < NUM_CARDS_S; l++) {
-                    if (i == l || j == l || k == l)
-                        continue;
+        for (int j = i+1; j < NUM_CARDS_S; j++) {
+            //if (i == j)
+                //continue;
+            for (int k = j+1; k < NUM_CARDS_S; k++) {
+                //if (i == k || j == k)
+                    //continue;
+                for(int l = k+1; l < NUM_CARDS_S; l++) {
+                    //if (i == l || j == l || k == l)
+                        //continue;
                     for(int c = 0; c < NUM_CARDS_S; c++) {
                         //make sure there are no duplicates
-                        /*if (i == j || i == k || i == l || i == c
-                                || j == k || j == l || j == c
-                                || k == l || k == c || l ==c)  {
-                            //duplicates present: do nothing
-                        } else {*/
                         if (i == c || j == c || k == c || l == c) 
                             continue;
                         //no duplicates: valid hand for printing
@@ -106,14 +101,14 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
 void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
     for (card_t i=get_next_bin(asn,a); i<NUM_CARDS; i=get_next_bin(asn,a)) {
         for (card_t j = i; j < NUM_CARDS; j++) {
-            if (i == j)
-                continue;
+            //if (i == j)
+                //continue;
             for (card_t k = j; k < NUM_CARDS; k++) {
-                if (i == k || j == k)
-                    continue;
+                //if (i == k || j == k)
+                    //continue;
                 for (card_t l = k; l < NUM_CARDS; l++) {
-                    if (i == l || j == l || k == l)
-                        continue;
+                    //if (i == l || j == l || k == l)
+                        //continue;
                     for (card_t c = 0; c < NUM_CARDS; c++) {
                         if (i == c || j == c || k == c || l == c) 
                             continue;
@@ -172,11 +167,11 @@ int main(int argc, char * argv[]) {
 
 #   ifdef DEBUG_ENUMERATE
     for (int i = 0; i < THREAD_COUNT; i++) {
-        pthread_create(&threads[i], NULL,  thread_handler_b, &args);
+        pthread_create(&threads[i], NULL,  thread_handler_s, &args);
     }
 #   else
     for (int i = 0; i < THREAD_COUNT; i++) {
-        pthread_create(&threads[i], NULL, thread_handler_s, &args);
+        pthread_create(&threads[i], NULL, thread_handler_b, &args);
     }
     //enumerate(stream);
 #   endif
