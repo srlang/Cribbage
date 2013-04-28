@@ -21,16 +21,11 @@
  * game.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-//#include <fcntl.h>
-//#include <sys/stat.h>
-#include <semaphore.h>
-
-#include <pthread.h>
-
-#include "enumerate.h"
+#include <stdio.h>      //for interaction and I/O
+#include <stdlib.h>     //for mallocs/callocs and others 
+#include <semaphore.h>  //for semaphores
+#include <pthread.h>    //for multiple threads
+#include "enumerate.h"  //for personal constants
 
 
 
@@ -57,6 +52,7 @@ void enum_safe(FILE * outfile) {
                         fprintf(outfile,  "%i %i %i %i %i\n", i, j, k, l, c);
 }
 
+/* Get the next value to use for multi-threaded loop */
 int get_next(assg_t *asn, sem_t *lock) {
     int ret = 0;
     sem_wait(lock);
@@ -66,21 +62,23 @@ int get_next(assg_t *asn, sem_t *lock) {
     return ret;
 }
 
+/* Get the next binary value to use for a loop */
 card_t get_next_bin(assg_t *asn, sem_t *lock) {
     return (card_t) (0xFF & get_next(asn, lock));
 }
 
+/* Enumerate up to a safe number (multi-threaded) */
 void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
 
     for(int i=get_next(asn, lock_a); i<NUM_CARDS_S; i=get_next(asn, lock_a)) {
 
-        for (int j = 0; j < NUM_CARDS_S; j++) {
+        for (int j = i; j < NUM_CARDS_S; j++) {
             if (i == j)
                 continue;
-            for (int k = 0; k < NUM_CARDS_S; k++) {
+            for (int k = j; k < NUM_CARDS_S; k++) {
                 if (i == k || j == k)
                     continue;
-                for(int l = 0; l < NUM_CARDS_S; l++) {
+                for(int l = k; l < NUM_CARDS_S; l++) {
                     if (i == l || j == l || k == l)
                         continue;
                     for(int c = 0; c < NUM_CARDS_S; c++) {
@@ -104,15 +102,16 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
     }
 }
 
+/* Enumerate all possibilities and output in a purley binary manner. */
 void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
     for (card_t i=get_next_bin(asn,a); i<NUM_CARDS; i=get_next_bin(asn,a)) {
-        for (card_t j = 0; j < NUM_CARDS; j++) {
+        for (card_t j = i; j < NUM_CARDS; j++) {
             if (i == j)
                 continue;
-            for (card_t k = 0; j < NUM_CARDS; k++) {
+            for (card_t k = j; k < NUM_CARDS; k++) {
                 if (i == k || j == k)
                     continue;
-                for (card_t l = 0; l < NUM_CARDS; l++) {
+                for (card_t l = k; l < NUM_CARDS; l++) {
                     if (i == l || j == l || k == l)
                         continue;
                     for (card_t c = 0; c < NUM_CARDS; c++) {
@@ -132,12 +131,14 @@ void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
 }
 
 
+/* Handle the arguments and call a safe thread function. */
 void * thread_handler_s(void * args) {
     targ_t * arg = (targ_t *) args;
     thread_enum_safe(arg->out, arg->o_lock, arg->assg, arg->a_lock);
     return NULL;
 }
 
+/* Handle the arguments and call a binary-outputting thread function. */
 void * thread_handler_b(void * args) {
     targ_t * arg = (targ_t *) args;
     thread_enum_bin(arg->out, arg->o_lock, arg->assg, arg->a_lock);
