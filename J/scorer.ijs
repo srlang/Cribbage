@@ -102,71 +102,31 @@ runs =: 3 : 0 "1
     count * (0:`])@.(3 <: ]) iar
 )
 
-NB. TODO: All fifteens calcaltions done here.
-NB. Fifteens calculator outline:
-NB.     - Sort in descending order
-NB.     - grab largest,
-NB.         - subtract value of largest from 15
-NB.         - grab next largest as long as +/ < 15
-NB.     - recur starting w/ second largest
+NB. value of a single combination of 15
 FIFTEENS_VALUE =: 2
-fifteens =: 3 : 0 "1
-    NB. Think change-maker
-    NB. sort down
-NB.    y =. \:~ y
-NB.    count =. fifteens_r y
-NB.    while. $ y do.
-NB.        first =. {. y
-NB.        rest  =. }. y
-NB.        while. $ rest do.
-NB.            f =. ''
-NB.            NB. TODO: Really need to re-think how to do this
-NB.            NB. algorithm will work. How I do this in J is 
-NB.            NB. the question that needs to be answered.
-NB.        end.
-NB.        y =. res.
-NB.    count return.
-
-NB. TODO
-NB. found a glaring issue
-NB. repeat values in the middle of the hand
-NB. e.g. 9 5 5 1 1 will only count as two 15's instead of
-NB. 4 as should happen. And even that is b/c i'm counting 
-NB. the number of each on the last possible card. 
-NB. possible fix could be to make a recursive verb to 
-NB. count the number of possibilities that the cards sum up
-NB. to a given value. i.e. 
-NB.     x poss_sums y
-    'Invalid hand size' assert 5 = $ y
-    y =. \:~ values y
-    if. 15 <: +/ y do. 15 = +/ y return. end.
-    count =. 0
-    for_first. y do.
-        rest =. y }.~ >:first_index
-        remaining =. 15 - first
-        for_eachrest. rest do.
-            if. 0 <: remaining - each_rest do.
-                remaining =. remaining - each_rest
-            end.
-            if. 0 = remaining do.
-                count =. count + (<:eachrest) { each_type y
-            end.
-            NB. TODO: Check to make sure this works.
-            NB. hint: it doesn't
-        end.
-    end.
-    count return.
-)
-fifteens =: 0: 
+NB. Monad. y: hand
+NB. Marshall's algorithm for calculating the possibilities
+NB. that add up to 15.
+NB. The basic idea is to find out loop through the cards and figure out
+NB. how many possible combinations of each sum there are.
 fifteens_marshall =: 3 : 0 "1
     'Invalid hand size' assert 5 = $y
+    NB. start with an empty list 
+    NB. with no cards, there is 1 possible way to get 0, and no possible
+    NB. ways of getting anything else
     a =. 1 , 15$0
-    for_card. values y do.
+    for_card. num_val y do.
+        NB. Shift the original list right by the value of the card, 
+        NB. replacing with 0's. Add that list to the original list 
+        NB. because we can now reach that number given the previous 
+        NB. cards' values.
         a =. a + (-card) |.!.0 a
     end.
     smoutput a
     15 { a return.
 )
+NB. debugging version of marshall's algorithm.
+NB. avoids the issue of thinking through suits.
 fifteens_d =: 3 : 0 "1
     a =. 1  , 15 $ 0
     for_card. y do.
@@ -174,19 +134,15 @@ fifteens_d =: 3 : 0 "1
     end.
     a
 )
+NB. A tacit definition of a verb to find the number of combinations 
+NB. that add up to fifteen
+NB. Works in a very straightforward way of adding all possible combinations
+NB. by representing each combination as a binary number.
+fifteens_t =: (15 +/@:= (#:i.2^5) +/@:*"1 ])"1
+NB. choose the verb that will be used to find the number of 15's
 fifteens =: fifteens_marshall
+NB. calculate the score generated from combinations of 15's
 FIFTEENS =: FIFTEENS_VALUE * fifteens
-
-fifteens_r =: 3 : 0 
-    if. -. $ y do. 0 return. end.
-    NB. sort down
-    y =. \:~ y
-    fif =. 0
-    f =. {. y
-    rest =. }. y
-    NB. TODO: add actual calculation at this point
-    fif + fifteens_r rest
-)
 
 NB. Monad. y: hand
 NB. Determine the number of unique pairs found in a 
