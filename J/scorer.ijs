@@ -158,6 +158,23 @@ NB.     x poss_sums y
     count return.
 )
 fifteens =: 0: 
+fifteens_marshall =: 3 : 0 "1
+    'Invalid hand size' assert 5 = $y
+    a =. 1 , 15$0
+    for_card. values y do.
+        a =. a + (-card) |.!.0 a
+    end.
+    smoutput a
+    15 { a return.
+)
+fifteens_d =: 3 : 0 "1
+    a =. 1  , 15 $ 0
+    for_card. y do.
+        a =. a + (-card) |.!.0 a
+    end.
+    a
+)
+fifteens =: fifteens_marshall
 FIFTEENS =: FIFTEENS_VALUE * fifteens
 
 fifteens_r =: 3 : 0 
