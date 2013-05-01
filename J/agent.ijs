@@ -60,10 +60,10 @@ choose      =: 3 : 0 "1
 NB. Main 
 (3 : 0) ''
     if. '' -: ALL_HANDS do.
-        ALL_HANDS =: ".;._2 (1!:1) <HANDS_FILE
+        ALL_HANDS =: /:~ ".;._2 (1!:1) <HANDS_FILE
     end.
     if. '' -: HANDS_S do.
-        HANDS_S =: tableize  /:~  ALL_HANDS
+        HANDS_S =: tableize  ALL_HANDS
     end.
     i.0 0 
 )
