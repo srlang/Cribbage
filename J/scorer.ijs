@@ -50,13 +50,15 @@ NB. Monad. y: hand
 NB. Determine if the given hand should receive an extra point 
 NB. because it has a right-jack scenario.
 JACK =: 10
-RIGHT_JACK =: right_jack
 right_jack =: 3 : 0 "1
     'Invalid hand size' assert 5 = $ y
     crib =. suits {: y
     hand =. }: y
     +/ crib = suits hand #~ JACK = values hand return.
 )
+right_jack_t =: suits@:{: +/@:= [: suits }: #~ JACK = values@:}:
+RIGHT_JACK =: right_jack_t
+
 
 NB. Monad. y: hand
 NB. Determines how many of each type of card (Jack, Queen, etc.) 
@@ -122,7 +124,7 @@ fifteens_marshall =: 3 : 0 "1
         NB. cards' values.
         a =. a + (-card) |.!.0 a
     end.
-    smoutput a
+    NB.smoutput a
     15 { a return.
 )
 NB. debugging version of marshall's algorithm.
