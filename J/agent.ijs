@@ -58,12 +58,21 @@ choose      =: 3 : 0 "1
 
 
 NB. Main 
+NB. Will define (if not created already) 
+NB. ALL_HANDS: the enumeration of all possible hands in a game of cribbage
+NB. HANDS_S: A table separating the player's hand from the cut card and
+NB.          including a calculated score.
 (3 : 0) ''
-    if. '' -: ALL_HANDS do.
+    if. _1 = 4!:0 <'ALL_HANDS' do.
         ALL_HANDS =: /:~ ".;._2 (1!:1) <HANDS_FILE
     end.
-    if. '' -: HANDS_S do.
-        HANDS_S =: tableize  ALL_HANDS
+    if. _1 = 4!:0 <'HANDS_S' do.
+        if. fexist HANDS_S_FILE do.
+            HANDS_S =: ".;._2 (1!:1) <HANDS_S_FILE
+        else. 
+            HANDS_S =: tableize  ALL_HANDS
+            NB. TODO: Write out the created table for next time
+        end.
     end.
     i.0 0 
 )
