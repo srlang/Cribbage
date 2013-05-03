@@ -172,6 +172,28 @@ void thread_enum_table(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
     }
 }
 
+void thread_enum_table_s(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
+    for (card_t i=get_next_bin(asn,a); i<NUM_CARDS; i=get_next_bin(asn,a)) {
+        for (card_t j = i; j < NUM_CARDS_S; j++) {
+            for (card_t k = j; k < NUM_CARDS_S; k++) {
+                for (card_t l = k; l < NUM_CARDS_S; l++) {
+                    for (card_t c = 0; c < NUM_CARDS_S; c++) {
+                        if (i == c || j == c || k == c || l == c) 
+                            continue;
+                        hand_t hand = {.cards[0] = i, .cards[1] = j,
+                            .cards[2] = k, .cards[3] = l, .crib=c};
+                        int score = system(strcat(J_SCORER, stringize(&hand)));
+                        sem_wait(o);
+                        fprintf(out, "%hu %hu %hu %hu ; %hu ; %d\n", 
+                                i, j, k, l, c, score);
+                        sem_post(o);
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 /* Handle the arguments and call a safe thread function. */
 void * thread_handler_s(void * args) {
@@ -187,6 +209,12 @@ void * thread_handler_b(void * args) {
     return NULL;
 }
 
+/* Handle arguments and call the table-outputting thread function. */
+void * thread_handler_t(void * args) {
+    targ_t * arg = (targ_t *) args;
+    thread_enum_table_s(arg->out, arg->o_lock, arg->assg, arg->a_lock);
+    return NULL;
+}
 
 
 /* Actually execute the enumerator functionality. */
@@ -214,7 +242,7 @@ int main(int argc, char * argv[]) {
 
 #   ifdef DEBUG_ENUMERATE
     for (int i = 0; i < THREAD_COUNT; i++) {
-        pthread_create(&threads[i], NULL,  thread_handler_s, &args);
+        pthread_create(&threads[i], NULL, thread_handler_t, &args);
     }
 #   else
     for (int i = 0; i < THREAD_COUNT; i++) {
