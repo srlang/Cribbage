@@ -62,6 +62,7 @@ NB. Will define (if not created already)
 NB. ALL_HANDS: the enumeration of all possible hands in a game of cribbage
 NB. HANDS_S: A table separating the player's hand from the cut card and
 NB.          including a calculated score.
+HANDS_S_FILE =: 'score_table.txt'
 (3 : 0) ''
     if. _1 = 4!:0 <'ALL_HANDS' do.
         ALL_HANDS =: /:~ ".;._2 (1!:1) <HANDS_FILE
@@ -72,6 +73,15 @@ NB.          including a calculated score.
         else. 
             HANDS_S =: tableize  ALL_HANDS
             NB. TODO: Write out the created table for next time
+            FILE =. <HANDS_S_FILE
+            FILE (1!:2)~ 'NB. Formatted text file for easier loading.' , CRLF
+            for_i. HANDS_S do.
+                h =. 0 {:: i
+                c =. 1 {:: i
+                s =. 2 {:: i
+                FILE (1!:3)~ '%d %d %d %d ; %d ; %d NB. EOL \n' sprintf h,c,s
+            end.
+            FILE (1!:3)~ 'NB. End of File.' , CRLF
         end.
     end.
     i.0 0 
