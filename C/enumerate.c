@@ -127,7 +127,9 @@ void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
 
 /* Function to turn a hand into a string to pass to the J scorer script. */
 /* Location of the J scorer script to whic the hand is passed. */
-static char * J_SCORER = "home/srlang/git/Cribbage/J/scorer_script.ijs ";
+/*static*/ char * J_SCORER; // = 
+//#define J_SCORER_INIT   
+static char * J_SCORER_INIT = "/home/srlang/git/Cribbage/J/scorer_script.ijs ";
 char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 char * stringize(hand_t * hand) {
     //char *ret = calloc(15, sizeof(char));
@@ -163,7 +165,11 @@ void thread_enum_table(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
                             continue;
                         hand_t hand = {.cards[0] = i, .cards[1] = j,
                             .cards[2] = k, .cards[3] = l, .crib=c};
-                        int score = system(strcat(stringize(&hand), J_SCORER));
+                        //init_jscorer();
+                        //int score = system(strcat(J_SCORER, stringize(&hand)));
+                        char * score_cmd;
+                        //TODO: score command creation
+                        int score = system(score_cmd);
                         sem_wait(o);
                         fprintf(out, "%hu %hu %hu %hu ; %hu ; %d\n", 
                                 i, j, k, l, c, score);
@@ -187,8 +193,15 @@ void thread_enum_table_s(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
                             .cards[2] = k, .cards[3] = l, .crib=c};
 #                       ifdef DEBUG
                             fprintf(stderr, "Beginning scoring: ");
+                            fprintf(stderr, "Concatenated: [");
+                            fprintf(stderr, strcat(J_SCORER, stringize(&hand)));
+                            fprintf(stderr, "]\n");
 #                       endif
-                        int score = system(strcat(stringize(&hand), J_SCORER));
+                        //int score = system(strcat(J_SCORER, stringize(&hand)));
+                        char * score_cmd;
+                        //TODO: score command creation
+                        int score = system(score_cmd);
+                        free(score_cmd);
 #                       ifdef DEBUG
                             fprintf(stderr, "Done.\n");
 #                       endif
@@ -225,9 +238,24 @@ void * thread_handler_t(void * args) {
     return NULL;
 }
 
+void init_jscorer() {
+    if (J_SCORER == NULL) {
+        //free(J_SCORER);
+        J_SCORER = (char *) malloc(200 * sizeof(char));
+    }
+    strncpy(J_SCORER, J_SCORER_INIT, 100);
+    J_SCORER[sizeof(J_SCORER_INIT) / sizeof(char)] = '\0';
+    
+}
 
 /* Actually execute the enumerator functionality. */
 int main(int argc, char * argv[]) {
+    //initialize J_SCORER
+    /*J_SCORER = NULL;
+    J_SCORER = (char *) malloc(200 * sizeof(char));
+    strncpy(J_SCORER, J_SCORER_INIT, 100);
+    J_SCORER[100] = '\0';*/
+    //init_jscorer();
     //figure out where we will be writing the data to
     FILE * stream = stdout;
     if (argc > 1) {

@@ -71,6 +71,7 @@ void enum_safe(FILE * outfile);
 //void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a);
 void thread_enum_safe(FILE *, sem_t *, assg_t *, sem_t *);
 void thread_enum_bin(FILE *, sem_t *, assg_t *, sem_t *);
+void init_jscorer();
 
 
 
