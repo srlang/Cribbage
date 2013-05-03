@@ -163,7 +163,7 @@ void thread_enum_table(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
                             continue;
                         hand_t hand = {.cards[0] = i, .cards[1] = j,
                             .cards[2] = k, .cards[3] = l, .crib=c};
-                        int score = system(strcat(J_SCORER, stringize(&hand)));
+                        int score = system(strcat(stringize(&hand), J_SCORER));
                         sem_wait(o);
                         fprintf(out, "%hu %hu %hu %hu ; %hu ; %d\n", 
                                 i, j, k, l, c, score);
