@@ -126,10 +126,15 @@ void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
 }
 
 /* Function to turn a hand into a string to pass to the J scorer script. */
+/* Location of the J scorer script to whic the hand is passed. */
+static char * J_SCORER = "home/srlang/git/Cribbage/J/scorer_script.ijs ";
 char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 char * stringize(hand_t * hand) {
     //char *ret = calloc(15, sizeof(char));
-    char * ret = (char *) malloc(15 * sizeof(char));
+    char * ret = (char *) malloc(sizeof(char)
+            * (15 + (sizeof(J_SCORER)/sizeof(char))) );
+    if (!ret)
+        return NULL;
     for(int i = 0; i < 4; i++) {
         int card = hand->cards[i];
         ret[3*i] = digits[card / 10];
@@ -143,8 +148,6 @@ char * stringize(hand_t * hand) {
     return ret;
 }
 
-/* Location of the J scorer script to whic the hand is passed. */
-#define J_SCORER    "/home/srlang/git/Cribbage/J/scorer_script.ijs "
 
 /* 
  * Multithreaded function to enumerate in a way that the J script
@@ -182,7 +185,13 @@ void thread_enum_table_s(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
                             continue;
                         hand_t hand = {.cards[0] = i, .cards[1] = j,
                             .cards[2] = k, .cards[3] = l, .crib=c};
-                        int score = system(strcat(J_SCORER, stringize(&hand)));
+#                       ifdef DEBUG
+                            fprintf(stderr, "Beginning scoring: ");
+#                       endif
+                        int score = system(strcat(stringize(&hand), J_SCORER));
+#                       ifdef DEBUG
+                            fprintf(stderr, "Done.\n");
+#                       endif
                         sem_wait(o);
                         fprintf(out, "%hu %hu %hu %hu ; %hu ; %d\n", 
                                 i, j, k, l, c, score);
