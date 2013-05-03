@@ -23,6 +23,7 @@
 
 #include <stdio.h>      //for interaction and I/O
 #include <stdlib.h>     //for mallocs/callocs and others 
+#include <string.h>     //for string concatenation
 #include <semaphore.h>  //for semaphores
 #include <pthread.h>    //for multiple threads
 #include "enumerate.h"  //for personal constants
@@ -122,6 +123,53 @@ void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
         }
     }
 
+}
+
+/* Function to turn a hand into a string to pass to the J scorer script. */
+char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+char * stringize(hand_t * hand) {
+    //char *ret = calloc(15, sizeof(char));
+    char * ret = (char *) malloc(15 * sizeof(char));
+    for(int i = 0; i < 4; i++) {
+        int card = hand->cards[i];
+        ret[3*i] = digits[card / 10];
+        ret[(3*i)+1] = digits[card % 10];
+        ret[(3*i)+2] = ' ';
+    }
+    int crib = hand->crib;
+    ret[12] = digits[crib / 10];
+    ret[13] = digits[crib % 10];
+    ret[14] = '\0';
+    return ret;
+}
+
+/* Location of the J scorer script to whic the hand is passed. */
+#define J_SCORER    "/home/srlang/git/Cribbage/J/scorer_script.ijs "
+
+/* 
+ * Multithreaded function to enumerate in a way that the J script
+ * can load much more quickly and without scoring anything on load.
+ */
+void thread_enum_table(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
+    for (card_t i=get_next_bin(asn,a); i<NUM_CARDS; i=get_next_bin(asn,a)) {
+        for (card_t j = i; j < NUM_CARDS; j++) {
+            for (card_t k = j; k < NUM_CARDS; k++) {
+                for (card_t l = k; l < NUM_CARDS; l++) {
+                    for (card_t c = 0; c < NUM_CARDS; c++) {
+                        if (i == c || j == c || k == c || l == c) 
+                            continue;
+                        hand_t hand = {.cards[0] = i, .cards[1] = j,
+                            .cards[2] = k, .cards[3] = l, .crib=c};
+                        int score = system(strcat(J_SCORER, stringize(&hand)));
+                        sem_wait(o);
+                        fprintf(out, "%hu %hu %hu %hu ; %hu ; %d\n", 
+                                i, j, k, l, c, score);
+                        sem_post(o);
+                    }
+                }
+            }
+        }
+    }
 }
 
 
