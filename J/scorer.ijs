@@ -76,7 +76,6 @@ each_type =: 3 : 0 "1
 NB. Monad. y: hand
 NB. Determine how many runs--and of what size--are present in 
 NB. the given hand.
-RUNS =: runs
 runs =: 3 : 0 "1 
     'Invalid hand size' assert 5 = $ y
     NB. Thought: Keep track of # of each card.
@@ -103,6 +102,7 @@ runs =: 3 : 0 "1
     NB.(0:`count"_)@.(iar >: 3)
     count * (0:`])@.(3 <: ]) iar
 )
+RUNS =: runs
 
 NB. value of a single combination of 15
 FIFTEENS_VALUE =: 2
