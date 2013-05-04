@@ -4,3 +4,5 @@ C/scorer
 hands*.txt
 hands*.dat
 J/printf.ijs
+test_scorer/
+test_scorer/*
