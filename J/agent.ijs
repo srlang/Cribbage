@@ -95,7 +95,7 @@ SUITS_S =: 'HCDS'
 TYPES_S =: 'A';'1';'2';'3';'4';'5';'6';'7';'8';'9';'10';'J';'Q';'K'
 human_to_numeric =: 3 : 0
     str =. ' ' , y
-    cards =. str (<;._1)~ ' ' = str
+    cards =. a: -.~ str (<;._1)~ ' ' = str
     suits_h =. SUITS_S i. {:@> cards
 )
 
