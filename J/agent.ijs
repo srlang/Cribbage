@@ -92,7 +92,7 @@ NB. Monad. y: string representing the given hand (human-readable)
 NB. Translate a human-readable string of cards into the numeric values 
 NB. that the calculation functions can use.
 SUITS_S =: 'HCDS'
-TYPES_S =: '1';'2';'3';'4';'5';'6';'7';'8';'9';'10';'J';'Q';'K';'A'
+TYPES_S =: 'A';'1';'2';'3';'4';'5';'6';'7';'8';'9';'10';'J';'Q';'K'
 human_to_numeric =: 3 : 0
 
 )

@@ -43,7 +43,7 @@ suits =: 4&|
 NB. verb to determine the value of the cards (2, Jack, etc.)
 values =: <.@(%&4)
 NB. verb to get the numerical value of the card
-num_val =: 10 <. >:@values
+num_val =: 1 >. 10 <. values
 
 
 NB. Monad. y: hand
