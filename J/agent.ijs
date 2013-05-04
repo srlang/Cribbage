@@ -40,20 +40,33 @@ NB. Sort the hands without touching the crib
 sort_hands  =: (/:~@:}: , {:)"1
 
 
-NB. table of all possible permutations
-tap         =: i.@! A. i.
-NB. table of all possible subset positions of the hand
-htap        =: ~. (/:~"1) 4 {."1 tap 6
-NB. find all possible cribs given a set hand
-all_poss    =: htap&{
+NB.NB. table of all possible permutations
+NB.tap         =: i.@! A. i.
+NB.NB. table of all possible subset positions of the hand
+NB.htap        =: ~. (/:~"1) 4 {."1 tap 6
+NB.NB. find all possible cribs given a set hand
+NB.all_poss    =: htap&{
+
+
+NB. Table of all possible choices to take from a 6-card deal
+choices_s =: |. I. ~. (#~ 4 = +/"1) #: i. 2 ^ 6
+NB. Possible choices of hands to crib-ize
+choices =: (choices_s&{)"1
+NB. All possible cards usable for the crib
+CARDS_CRIB =: i.52
+NB. Give all possible cribs for a set of four cards. Result: "2 
+enum_crib =: (#~ (-: ~.)"1)@:( CARDS_CRIB ,~"0 1 ] )"1
+
 
 
 NB. Monad. y: all cards dealt to the player
 NB. Returns the best four cards to keep and the average expected score
 choose      =: 3 : 0 "1
     assert. 6 = $ y
-    aph =. <"1 all_poss y
-    poss =. HANDS_S #~ aph ="0 1 {."1 HANDS_S
+    NB. result is 15 48 5 $ enumeration of all possible hands with knowledge
+    NB. of the taken cards, but not remembering what was thrown away
+    NB. TODO: find a way to remember thrown away cards
+    all_poss =. enum_crib choices y
 )
 
 
@@ -62,27 +75,27 @@ NB. Will define (if not created already)
 NB. ALL_HANDS: the enumeration of all possible hands in a game of cribbage
 NB. HANDS_S: A table separating the player's hand from the cut card and
 NB.          including a calculated score.
-HANDS_S_FILE =: 'score_table.txt'
-(3 : 0) ''
-    if. _1 = 4!:0 <'ALL_HANDS' do.
-        ALL_HANDS =: /:~ ".;._2 (1!:1) <HANDS_FILE
-    end.
-    if. _1 = 4!:0 <'HANDS_S' do.
-        if. fexist HANDS_S_FILE do.
-            HANDS_S =: ".;._2 (1!:1) <HANDS_S_FILE
-        else. 
-            HANDS_S =: tableize  ALL_HANDS
-            NB. TODO: Write out the created table for next time
-            FILE =. <HANDS_S_FILE
-            FILE (1!:2)~ 'NB. Formatted text file for easier loading.' , CRLF
-            for_i. HANDS_S do.
-                h =. 0 {:: i
-                c =. 1 {:: i
-                s =. 2 {:: i
-                FILE (1!:3)~ '%d %d %d %d ; %d ; %d NB. EOL \n' sprintf h,c,s
-            end.
-            FILE (1!:3)~ 'NB. End of File.' , CRLF
-        end.
-    end.
-    i.0 0 
-)
+NB.HANDS_S_FILE =: 'score_table.txt'
+NB.(3 : 0) ''
+NB.    if. _1 = 4!:0 <'ALL_HANDS' do.
+NB.        ALL_HANDS =: /:~ ".;._2 (1!:1) <HANDS_FILE
+NB.    end.
+NB.    if. _1 = 4!:0 <'HANDS_S' do.
+NB.        if. fexist HANDS_S_FILE do.
+NB.            HANDS_S =: ".;._2 (1!:1) <HANDS_S_FILE
+NB.        else. 
+NB.            HANDS_S =: tableize  ALL_HANDS
+NB.            NB. TODO: Write out the created table for next time
+NB.            FILE =. <HANDS_S_FILE
+NB.            FILE (1!:2)~ 'NB. Formatted text file for easier loading.' , CRLF
+NB.            for_i. HANDS_S do.
+NB.                h =. 0 {:: i
+NB.                c =. 1 {:: i
+NB.                s =. 2 {:: i
+NB.                FILE (1!:3)~ '%d %d %d %d ; %d ; %d NB. EOL \n' sprintf h,c,s
+NB.            end.
+NB.            FILE (1!:3)~ 'NB. End of File.' , CRLF
+NB.        end.
+NB.    end.
+NB.    i.0 0 
+NB.)
