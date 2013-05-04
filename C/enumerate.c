@@ -187,9 +187,9 @@ void thread_enum_table(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
 /* Function to output a safe number of lines of the cribbage hands. */
 void thread_enum_table_s(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
     for (card_t i=get_next_bin(asn,a); i<NUM_CARDS_S; i=get_next_bin(asn,a)) {
-        for (card_t j = i; j < NUM_CARDS_S; j++) {
-            for (card_t k = j; k < NUM_CARDS_S; k++) {
-                for (card_t l = k; l < NUM_CARDS_S; l++) {
+        for (card_t j = i+1; j < NUM_CARDS_S; j++) {
+            for (card_t k = j+1; k < NUM_CARDS_S; k++) {
+                for (card_t l = k+1; l < NUM_CARDS_S; l++) {
                     for (card_t c = 0; c < NUM_CARDS_S; c++) {
                         if (i == c || j == c || k == c || l == c) 
                             continue;
@@ -197,6 +197,10 @@ void thread_enum_table_s(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
                         snprintf(score_cmd, SC_SZ, J_SC_FMT, i, j, k,
                                 l, c);
                         int score = system(score_cmd);
+#                       ifdef DEBUG_ENUMERATE
+                            fprintf(stderr, "score_cmd: [%s]\n", score_cmd);
+                            fprintf(stderr, "Score: [%d]\n", score);
+#                       endif
                         fprintf(out, "%hu %hu %hu %hu ; %hu ; %d\n", 
                                 i, j, k, l, c, score);
                         sem_post(o);
