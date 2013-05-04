@@ -92,12 +92,32 @@ NB. Monad. y: string representing the given hand (human-readable)
 NB. Translate a human-readable string of cards into the numeric values 
 NB. that the calculation functions can use.
 SUITS_S =: 'HCDS'
-TYPES_S =: 'A';'1';'2';'3';'4';'5';'6';'7';'8';'9';'10';'J';'Q';'K'
-human_to_numeric =: 3 : 0
+TYPES_1 =: 'A';'1';'2';'3';'4';'5';'6';'7';'8';'9';'10';'J';'Q';'K'
+TYPES_2 =: 'A ';'1 ';'2 ';'3 ';'4 ';'5 ';'6 ';'7 ';'8 ';'9 ';'10';'J ';'Q ';'K '
+TYPES_S =: 'A1234567890JQK'
+human_to_numeric =: 3 : 0 "1
     str =. ' ' , y
     cards =. a: -.~ str (<;._1)~ ' ' = str
     suits_h =. SUITS_S i. {:@> cards
+    types_h =. TYPES_S i. {:@}:@> cards
+    suits_h + 4 * types_h
 )
+hton =: human_to_numeric
+
+NB. Monad. y: computer-readable list of cards in a hand
+NB. Return a human-readable string of cards the human can see
+NB. If too difficult to make a string, may be a list of boxes
+numeric_to_human =: 3 : 0 "1
+    suit_n =. SUITS_S {~ suits y
+    type_n =. TYPES_1 {~ values y
+    str_ret =. ''
+    for_i. y do.
+        suit_i =. SUITS_S {~ suits i
+        type_i =. TYPES_1 {~ values i
+        str_ret =. str_ret , (>type_i) , suit_i , ' '
+    end.
+)
+ntoh =: numeric_to_human
 
 
 NB. Main 
