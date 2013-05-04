@@ -57,16 +57,44 @@ CARDS_CRIB =: i.52
 NB. Give all possible cribs for a set of four cards. Result: "2 
 enum_crib =: (#~ (-: ~.)"1)@:( CARDS_CRIB ,~"0 1 ] )"1
 
+NB. index of largest item in the list
+hi_indx =: i. >./
+
+
+NB. Statistical functions
+mean =: +/ % #
+median =: 0:
+mode =: 1:
+
 
 
 NB. Monad. y: all cards dealt to the player
 NB. Returns the best four cards to keep and the average expected score
 choose      =: 3 : 0 "1
     assert. 6 = $ y
+    NB. possible choices to take for a hand
+    pc =. choices y
     NB. result is 15 48 5 $ enumeration of all possible hands with knowledge
     NB. of the taken cards, but not remembering what was thrown away
     NB. TODO: find a way to remember thrown away cards
-    all_poss =. enum_crib choices y
+    all_poss =. enum_crib pc
+    NB. figure out which hand should be taken to have the best chance
+    NB. of scoring highly
+    NB. currently accomplished by taking the highest average
+    NB. TODO: develop a more effective choosing method
+    scores =. score all_poss
+    evaled =. mean"1 scores
+    pc {~ hi_indx"1 evaled
+)
+
+
+NB. Monad. y: string representing the given hand (human-readable)
+NB. Translate a human-readable string of cards into the numeric values 
+NB. that the calculation functions can use.
+SUITS_S =: 'HCDS'
+TYPES_S =: '1';'2';'3';'4';'5';'6';'7';'8';'9';'10';'J';'Q';'K';'A'
+human_to_numeric =: 3 : 0
+
 )
 
 
