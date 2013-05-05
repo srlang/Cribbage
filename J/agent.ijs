@@ -63,14 +63,17 @@ hi_indx =: i. >./
 
 NB. Statistical functions
 mean =: +/ % #
-median =: 0:
-mode =: 1:
+even_med =: mean@(/:~ {~ (0 1 + -:@#))"1
+odd_med =: (<.@-:@# { /:~)"1
+median =: (even_med`odd_med)@.((2&|)@#)
+NB. borrowed from "www.jsoftware.com/jwiki/DevonMcCormick/myStats.ijs"
+mode =: ( ~. {~ [: (i. >./) #/.~ )"1
 
 
 
 NB. Monad. y: all cards dealt to the player
 NB. Returns the best four cards to keep and the average expected score
-choose      =: 3 : 0 "1
+choose_m    =: 3 : 0 "1
     assert. 6 = $ y
     NB. possible choices to take for a hand
     pc =. choices y
@@ -80,12 +83,19 @@ choose      =: 3 : 0 "1
     all_poss =. enum_crib pc
     NB. figure out which hand should be taken to have the best chance
     NB. of scoring highly
-    NB. currently accomplished by taking the highest average
+    NB. currently accomplished by taking the highest score where the
+    NB. score is the average of the mean and mode of the scores of 
+    NB. each possible hand.
     NB. TODO: develop a more effective choosing method
     scores =. score all_poss
-    evaled =. mean"1 scores
+    avgs =. mean"1 scores
+    meds =. median"1 scores
+    evaled =. mean"1 avgs ,. meds
+    smoutput (,.pc) ; (,.evaled) ; avgs,.meds
     pc {~ hi_indx"1 evaled
 )
+
+choose =: choose_m &. hton
 
 
 NB. Monad. y: string representing the given hand (human-readable)
