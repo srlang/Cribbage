@@ -49,7 +49,7 @@ num_val =: 10 <. >:@values
 NB. Monad. y: hand
 NB. Determine if the given hand should receive an extra point 
 NB. because it has a right-jack scenario.
-JACK =: 11
+JACK =: 10
 right_jack =: 3 : 0 "1
     'Invalid hand size' assert 5 = $ y
     crib =. suits {: y
