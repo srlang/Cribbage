@@ -16,21 +16,29 @@ NB. You should have received a copy of the GNU General Public License
 NB. along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-
-NB. NOTE: This program doesn't need to do an enumeration of every hand
-NB. at the beginning. A smart way of doing this would be to make the 
-NB. enumeration happen for each hand given and if it's not in the larger
-NB. table, then it's safe to add.
+NB. ========================================================================
+NB. Cribbage Agent Script
+NB. 
+NB. This script is to contain a set of verbs and nouns needed to make
+NB. an educated decision on which four cards to keep for a cribbage
+NB. hand out of a set of six cards that are dealt to the agent.
+NB. 
+NB. The agent functions by reading in the six cards dealt. It then chooses
+NB. chooses each subset of four and enumerates all possibilities for the 
+NB. crib that are available. It then scores all possibilities and the 
+NB. averages the scores possible with a given subset hand. The highest 
+NB. average of the average and median score is the hand that is chosen.
+NB. ========================================================================
 
 
 NB. Use the scoring verbs
-require 'scorer.ijs'
+SCORER_PATH =: '/home/srlang/git/Cribbage/J/'
+SCORER_SCRIPT =: 'scorer.ijs'
+require SCORER_PATH , SCORER_SCRIPT
 
 
-NB. Globals and Manifests
-HANDS_FILE  =: '/home/srlang/git/Cribbage/hands_2.txt'
-NB. ALL_HANDS   =: ''
-NB. HANDS_S     =: ''
+NB. Make a friendlier version of score for the user
+score_h =: score @ hton
 
 
 NB. Create the table to hold all the information for the enumeration of hands
@@ -40,21 +48,17 @@ NB. Sort the hands without touching the crib
 sort_hands  =: (/:~@:}: , {:)"1
 
 
-NB.NB. table of all possible permutations
-NB.tap         =: i.@! A. i.
-NB.NB. table of all possible subset positions of the hand
-NB.htap        =: ~. (/:~"1) 4 {."1 tap 6
-NB.NB. find all possible cribs given a set hand
-NB.all_poss    =: htap&{
-
-
 NB. Table of all possible choices to take from a 6-card deal
 choices_s =: |. I. ~. (#~ 4 = +/"1) #: i. 2 ^ 6
 NB. Possible choices of hands to crib-ize
 choices =: (choices_s&{)"1
+NB. Values excluded from the choices
+nchoices_s =: |. I. ~. -. (#~ 4 = +/"1) #: i.2^6
 NB. All possible cards usable for the crib
 CARDS_CRIB =: i.52
 NB. Give all possible cribs for a set of four cards. Result: "2 
+NB. TODO: idea: change ] to _2&}. to avoid the making the crib with other 
+NB.         cards in-hand
 enum_crib =: (#~ (-: ~.)"1)@:( CARDS_CRIB ,~"0 1 ] )"1
 
 NB. index of largest item in the list
@@ -141,32 +145,3 @@ numeric_to_human =: 3 : 0 "1
 ntoh =: numeric_to_human :. hton
 
 
-NB. Main 
-NB. Will define (if not created already) 
-NB. ALL_HANDS: the enumeration of all possible hands in a game of cribbage
-NB. HANDS_S: A table separating the player's hand from the cut card and
-NB.          including a calculated score.
-NB.HANDS_S_FILE =: 'score_table.txt'
-NB.(3 : 0) ''
-NB.    if. _1 = 4!:0 <'ALL_HANDS' do.
-NB.        ALL_HANDS =: /:~ ".;._2 (1!:1) <HANDS_FILE
-NB.    end.
-NB.    if. _1 = 4!:0 <'HANDS_S' do.
-NB.        if. fexist HANDS_S_FILE do.
-NB.            HANDS_S =: ".;._2 (1!:1) <HANDS_S_FILE
-NB.        else. 
-NB.            HANDS_S =: tableize  ALL_HANDS
-NB.            NB. TODO: Write out the created table for next time
-NB.            FILE =. <HANDS_S_FILE
-NB.            FILE (1!:2)~ 'NB. Formatted text file for easier loading.' , CRLF
-NB.            for_i. HANDS_S do.
-NB.                h =. 0 {:: i
-NB.                c =. 1 {:: i
-NB.                s =. 2 {:: i
-NB.                FILE (1!:3)~ '%d %d %d %d ; %d ; %d NB. EOL \n' sprintf h,c,s
-NB.            end.
-NB.            FILE (1!:3)~ 'NB. End of File.' , CRLF
-NB.        end.
-NB.    end.
-NB.    i.0 0 
-NB.)
