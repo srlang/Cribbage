@@ -57,12 +57,10 @@ nchoices_s =: |. I. ~. -. (#~ 4 = +/"1) #: i.2^6
 NB. All possible cards usable for the crib
 CARDS_CRIB =: i.52
 NB. Give all possible cribs for a set of four cards. Result: "2 
-NB. TODO: idea: change ] to _2&}. to avoid the making the crib with other 
-NB.         cards in-hand
-enum_crib =: (#~ (-: ~.)"1)@:( CARDS_CRIB ,~"0 1 ] )"1
+enum_crib =: ( (4&{. , {:)"1 )@:(#~ (-: ~.)"1)@:( CARDS_CRIB ,~"0 1 ] )"1
 
-NB. index of largest item in the list
-hi_indx =: i. >./
+NB. index of largest item in the list. choose one at random if multiple
+hi_indx =: ( ({~ ?@#)@:(I.@(= >./)) )"1
 
 
 NB. Statistical functions
@@ -83,30 +81,22 @@ choose_m    =: 3 : 0 "1
     pc =. choices y
     np =. y -."1 pc
     NB. result is 15 48 5 $ enumeration of all possible hands with knowledge
-    NB. of the taken cards, but not remembering what was thrown away
-    NB. TODO: find a way to remember thrown away cards
-    all_poss =. enum_crib pc
-    cribs =. 4 {"1 all_poss
-    NB. keep_indx =. I. +./ -. np ="0 1 cribs
-    lose_indx =. I. +./ np ="0 1 cribs
-    NB. keep_indx =. (i.48) -. ,lose_indx
-    NB. fixed =. keep_indx {"_ _1 all_poss
-    NB. smoutput |: <"2 [ 5 {.fixed
-    NB. hands_c =. take_c { 
-    fixed =. all_poss
-
+    NB. of the taken cards, remembering what was thrown away
+    all_poss =. enum_crib pc ,"1 1 np
+    
     NB. figure out which hand should be taken to have the best chance
     NB. of scoring highly
     NB. currently accomplished by taking the highest score where the
     NB. score is the average of the mean and mode of the scores of 
-    NB. each possible hand.
+    NB. each possible hand. Chooses a random index if multiple hands
+    NB. evaluate to the same score.
     NB. TODO: develop a more effective choosing method
-    scores =. score fixed
+    scores =. score all_poss
     avgs =. mean"1 scores
     meds =. median"1 scores
     evaled =. mean"1 avgs ,. meds
     NB. smoutput (,.pc) ; (,.evaled) ; avgs,.meds
-    pc {~ hi_indx"1 evaled
+    pc {~  hi_indx"1 evaled
 )
 
 NB. User-friendly verb to choose the best hand.
