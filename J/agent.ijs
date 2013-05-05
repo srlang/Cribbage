@@ -95,7 +95,7 @@ choose_m    =: 3 : 0 "1
     avgs =. mean"1 scores
     meds =. median"1 scores
     evaled =. mean"1 avgs ,. meds
-    smoutput (,.pc) ; (,.evaled) ; avgs,.meds
+    NB. smoutput (,.pc) ; (,.evaled) ; avgs,.meds
     pc {~  hi_indx"1 evaled
 )
 
@@ -108,7 +108,7 @@ NB. Translate a human-readable string of cards into the numeric values
 NB. that the calculation functions can use.
 SUITS_S =: 'HCDS'
 TYPES_B =: 'A';'2';'3';'4';'5';'6';'7';'8';'9';'10';'J';'Q';'K'
-TYPES_S =: 'A1234567890JQK'
+TYPES_S =: 'A234567890JQK'
 human_to_numeric =: 3 : 0 "1
     str =. ' ' , y
     cards =. a: -.~ str (<;._1)~ ' ' = str
