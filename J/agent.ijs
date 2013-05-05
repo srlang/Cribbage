@@ -95,6 +95,7 @@ choose_m    =: 3 : 0 "1
     pc {~ hi_indx"1 evaled
 )
 
+NB. User-friendly verb to choose the best hand.
 choose =: choose_m &. hton
 
 
