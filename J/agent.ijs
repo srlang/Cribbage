@@ -101,7 +101,7 @@ choose_m    =: 3 : 0 "1
     avgs =. mean"1 scores
     meds =. median"1 scores
     evaled =. mean"1 avgs ,. meds
-    smoutput (,.pc) ; (,.evaled) ; avgs,.meds
+    NB. smoutput (,.pc) ; (,.evaled) ; avgs,.meds
     pc {~ hi_indx"1 evaled
 )
 
@@ -129,13 +129,14 @@ NB. Return a human-readable string of cards the human can see
 NB. If too difficult to make a string, may be a list of boxes
 numeric_to_human =: 3 : 0 "1
     suit_n =. SUITS_S {~ suits y
-    type_n =. TYPES_1 {~ values y
+    type_n =. TYPES_S {~ values y
     str_ret =. ''
     for_i. y do.
         suit_i =. SUITS_S {~ suits i
         type_i =. TYPES_B {~ values i
         str_ret =. str_ret , (>type_i) , suit_i , ' '
     end.
+    str_ret return.
 )
 ntoh =: numeric_to_human :. hton
 
