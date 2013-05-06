@@ -1,4 +1,7 @@
 
 agent.ijs
-    - Find a way to remember which cards have been thrown away. 
     - Figure out a better(?) method to evaluate the hands.
+
+Meta:
+    - Perhaps make a meta-agent that decides when to begin
+        looking for pegging hands or trying to be defensive.
