@@ -32,7 +32,7 @@ NB. ========================================================================
 
 
 NB. Use the scoring verbs
-SCORER_PATH =: '/home/srlang/git/Cribbage/J/'
+SCORER_PATH =: ''
 SCORER_SCRIPT =: 'scorer.ijs'
 require SCORER_PATH , SCORER_SCRIPT
 
