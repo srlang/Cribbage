@@ -27,3 +27,9 @@ AH 7D 10D QC KD KS
 AC 2H 2D 6D 8C KH
 AH AS 7D 10D QC KD
 )
+
+NB. Demonstration for those not as familiar with how the 
+NB. program or game works and so that they can see the results
+NB. of the choosing process much more clearly.
+demo =: (('Dealt';'Take')&,) @: (,"1 choose&.>)@:,.
+NB.DEMO =: demo test_cases
