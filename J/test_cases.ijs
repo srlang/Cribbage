@@ -33,3 +33,6 @@ NB. program or game works and so that they can see the results
 NB. of the choosing process much more clearly.
 demo =: (('Dealt';'Take')&,) @: (,"1 choose&.>)@:,.
 NB.DEMO =: demo test_cases
+
+NB. select x random elements from y: useful with demo
+random =: ([ ? #@]) { ]
