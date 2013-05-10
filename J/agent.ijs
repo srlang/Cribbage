@@ -37,6 +37,13 @@ SCORER_SCRIPT =: 'scorer.ijs'
 require SCORER_PATH , SCORER_SCRIPT
 
 
+NB. Debug flag for nice output when wanted
+DEBUG =: 1
+
+NB. determine if a named variable is defined
+defined =: 0 <: (4!:0)@<
+
+
 NB. Make a friendlier version of score for the user
 score_h =: score @ hton
 
@@ -95,7 +102,11 @@ choose_m    =: 3 : 0 "1
     avgs =. mean"1 scores
     meds =. median"1 scores
     evaled =. mean"1 avgs ,. meds
-    NB. smoutput (,.pc) ; (,.evaled) ; avgs,.meds
+    if. defined 'DEBUG' do.
+        if. DEBUG do.
+            smoutput (,.pc) ; (,.evaled) ; avgs,.meds
+        end.
+    end.
     pc {~  hi_indx"1 evaled
 )
 
