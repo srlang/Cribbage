@@ -8,6 +8,13 @@
  */
 #define DEBUG       1
 
+
+/* Size of the hand */
+#define HAND_SIZE       4
+
+/* Size of the hand plus the crib */
+#define HAND_SIZE_CRIB  (HAND_SIZE + 1)
+
 /* Hold the value of a card */
 typedef unsigned char card_t;
 
