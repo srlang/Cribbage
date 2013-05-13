@@ -1,7 +1,29 @@
 
-agent.ijs
-    - Figure out a better(?) method to evaluate the hands.
-
 Meta:
     - Perhaps make a meta-agent that decides when to begin
         looking for pegging hands or trying to be defensive.
+    Plan:
+        - Chooser that, knowing who gets the crib, will weigh
+            the pros and cons of throwing the cards in with
+            the pros and cons of keeping the other cards.
+                - Will require a weighted function to evaluate
+                    how defensive to play
+        - Agent to keep track of whose turn it is and feed that
+            to the above chooser function
+        - Evaluator to determine what I think a good pegging hand 
+            will look like 
+                - favor cards and combos I like for pegging
+        - Implement a learner to actually do the pegging
+        - See which hands tend to peg better and use that as the 
+            new pegging evaluator
+                - only use in situations that pegging is wanted
+
+
+At some point, I would like to translate what I have into a C 
+    implementation. That way, I can take advantage of multiple 
+    threads and lower-level implementation.
+
+
+agent.ijs
+    - Figure out a better(?) method to evaluate the hands.
+
