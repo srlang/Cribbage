@@ -16,16 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * TODO: Question:
- *  - Does int * hand[] mean multi-dimensional
- *      array, or does it mean pointer to an 
- *      int[].
- *  - More importantly, how will the executed 
- *      code behave in either option?
- * Doesn't matter, fixed by dereferencing first
- *  and "storing" the array locally. (at least, I hope)
- */
 #include "scorer.h"
 #include <stdlib.h>
 
@@ -141,4 +131,9 @@ int * sort_down(int * hand[]) {
 //information on how this should work.
 int fifteens(int * hand[]) {
     return 0;   
+}
+
+
+score_t score(hand_t * hand) {
+    return 0;
 }
