@@ -30,31 +30,31 @@
 #define CRIB_LOCATION   4
 
 /* Find the suit of the given card. */
-int suit(int card) {
+Suits_t suit(card_t card) {
     return card % NUM_SUITS;
 }
 
 /* Find the type (Ace-King) of the given card */
-int type(int card) {
+Cards_t type(card_t card) {
     return card / NUM_TYPES;
 }
 
 /* Find the numerical value of the card (for counting to 15) */
-int value(int card) {
-    int div = card / NUM_TYPES;
-    return div > 10 ? 10 : div;
+score_t value(card_t card) {
+    Cards_t div = type(card) + 1;
+    return MAX(MIN_NUMVAL, MIN(MAX_NUMVAL, div));
 }
+
 
 /*
  * Function to determine whether the hand should get 
  * an extra point for having the right jack.
  */
-int right_jack(int * hand[]) {
-    //int * _hand = *hand;
-    int crib = (*hand)[CRIB_LOCATION];
-    for(int i = 0; i < HAND_SIZE; i++) {
-        if ( value((*hand)[i]) == Jack && 
-                (suit((*hand)[i]) == suit(crib)) ) {
+score_t right_jack(hand_t * hand) {
+    Suits_t cs = suit(hand->crib);
+    for(card_t i = 0; i < HAND_SIZE; i++) {
+        if (type(hand->cards[i]) == Jack 
+                && suit(hand->cards[i]) == cs) {
             return 1;
         }
     }
@@ -63,77 +63,24 @@ int right_jack(int * hand[]) {
 
 
 /* Method to find and return the number of runs available. */
-int runs(int * hand[]) {
-    //int * _hand = *hand;
-    int each_type[NUM_TYPES];
-    for(int i = 0; i < TOTAL_SIZE; i++) {
-        each_type[(*hand)[i] - 1]++;
-    }
-    int iar = 0;
-    int count = 1;
-    for(int i = 0; i < NUM_TYPES; i++) {
-        if (each_type[i] == 0 && count > 1) {
-            break;
-        } else if (each_type[i] == 0) {
-            count = 0;
-        }
-        if (each_type[i] > 0) {
-            count *= each_type[i];
-        }
-    }
-    return iar < 3 ? 0 : count * iar;
+score_t runs(hand_t * hand) {
+    return 0;
 }
 
-/* Helper method to sort the hand in ascending order. */
-int * sort_up(int * hand[]) {
-    int * _hand = *hand;
-    /* selection sort, because there's only a few items */
-    int min;
-    for (int j = 0; j < TOTAL_SIZE - 1; j++) {
-        min = j;
-        for(int i = j+1; i < TOTAL_SIZE; i++) {
-            if (_hand[i] < _hand[min])
-                min = i;
-        }
-
-        if (min != j) {
-            /* swap a[j], a[min] */
-            int t = _hand[j];
-            _hand[j] = _hand[min];
-            _hand[min] = t;
-        }
-    }
-    return _hand;
+/* Score based on number of pairs */
+score_t pairs(hand_t * hand) {
+    return 0;
 }
 
-/*
- * Function to determine how many pairs are in the 
- * given hand.
- */
-int pairs(int * hand[]) {
-    int * _hand = *hand;
-    int count = 0;
-    for(int i = 0; i < TOTAL_SIZE; i++) {
-        for(int j = i; j < TOTAL_SIZE; j++) {
-            count += (*hand)[i] == (*hand)[j];
-        }
-    }
-    return count;
-}
 
-//TODO: Implementation
-int * sort_down(int * hand[]) {
-    return *hand;
-}
-
-//TODO: Implementation
-//See the commentary in ../J/scorer.ijs for more
-//information on how this should work.
-int fifteens(int * hand[]) {
+/* Find how many combinations of fifteen there are in the hand. */
+score_t fifteens(hand_t * hand) {
     return 0;   
 }
 
 
+/* Score the hand */
 score_t score(hand_t * hand) {
-    return 0;
+    return right_jack(hand) + runs(hand) 
+        + pairs(hand) + fifteens(hand);
 }
