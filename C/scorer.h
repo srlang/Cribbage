@@ -23,8 +23,9 @@
 
 /* Type of the cards and their values. */
 typedef enum Cards {
-    Joker, Ace, One, Two, Three, Four, Five, Six,
-    Seven, Eight, Nine, Ten, Jack, Queen, King
+    Ace = 0, Two = 1, Three = 2, Four = 3, 
+    Five = 4, Six = 5, Seven = 6, Eight = 7,
+    Nine = 8, Ten = 9, Jack, Queen = 10, King = 11
 } Cards_t;
 
 /* Suits of the cards. */
@@ -33,17 +34,35 @@ typedef enum Suits {
 } Suits_t;
 
 /* Find the suit of the given card. */
-#define NUM_SUITS   4
-int suit(int card);
+#define NUM_SUITS       4
+Suits_t suit(card_t);
 
 /* Find the type (Ace - King) of the given card. */
-#define NUM_TYPES   12
-int type(int card);
+#define NUM_TYPES       12
+Cards_t type(card_t);
 
 /* Find the numerical value of the card (for counting to 15). */
-int value(int card); 
+#define MIN_NUMVAL      1
+#define MAX_NUMVAL      10
+#define MIN(a,b)        (a < b ? a : b)
+#define MAX(a,b)        (a > b ? a : b)
+score_t value(card_t); 
+
+/* Figure out if a hand should get an extra point for a right jack */
+score_t right_jack(hand_t *);
+
+/* Score the number of pairs present in the hand. */
+score_t pairs(hand_t *);
+#define PAIRS_VALUE     2
+
+/* Find how many points should be given due to runs. */
+score_t runs(hand_t *);
+
+/* Score based on combinations of 15. */
+score_t fifteens(hand_t *);
+#define FIFTEENS_VALUE  2
 
 /* Score the hand given */
-unsigned char score(hand_t * hand);
+score_t score(hand_t *);
 
 #endif
