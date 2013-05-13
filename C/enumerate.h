@@ -62,6 +62,11 @@ typedef struct hand {
     card_t crib;
 } hand_t;
 
+typedef struct scored_hand {
+    hand_t hand;
+    unsigned char score;
+} scored_t;
+
 #define BEGINNING_ASSIGNER  {.indx = 0}
 
 

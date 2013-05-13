@@ -27,6 +27,7 @@
 #include <semaphore.h>  //for semaphores
 #include <pthread.h>    //for multiple threads
 #include "enumerate.h"  //for personal constants
+#include "scorer.h"     //for scoring the hands before outputting
 
 
 
@@ -86,7 +87,7 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
                         //make sure there are no duplicates
                         if (i == c || j == c || k == c || l == c) 
                             continue;
-                        //no duplicates: valid hand for printing
+                        //no duplicates: valid hand for output
                         sem_wait(lock_o);
                         fprintf(out,  "%i %i %i %i %i\n", i, j, k, l, c);
                         sem_post(lock_o);
@@ -100,23 +101,21 @@ void thread_enum_safe(FILE *out, sem_t *lock_o, assg_t *asn, sem_t *lock_a) {
 /* Enumerate all possibilities and output in a purley binary manner. */
 void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
     for (card_t i=get_next_bin(asn,a); i<NUM_CARDS; i=get_next_bin(asn,a)) {
-        for (card_t j = i; j < NUM_CARDS; j++) {
-            //if (i == j)
-                //continue;
-            for (card_t k = j; k < NUM_CARDS; k++) {
-                //if (i == k || j == k)
-                    //continue;
-                for (card_t l = k; l < NUM_CARDS; l++) {
-                    //if (i == l || j == l || k == l)
-                        //continue;
+        for (card_t j = i+1; j < NUM_CARDS; j++) {
+            for (card_t k = j+1; k < NUM_CARDS; k++) {
+                for (card_t l = k+1; l < NUM_CARDS; l++) {
                     for (card_t c = 0; c < NUM_CARDS; c++) {
                         if (i == c || j == c || k == c || l == c) 
                             continue;
                         hand_t hand = {.cards[0] = i, .cards[1] = j,
                             .cards[2] = k, .cards[3] = l, .crib=c};
+                        /*hand_t * hand = (hand_t *) malloc(sizeof(hand_t));
+                        hand->cards = (card_t[]) {i, j, k, l};
+                        hand->crib = c;*/
                         sem_wait(f);
                         fwrite(&hand, sizeof(hand), 1, out);
                         sem_post(f);
+                        /*free(hand);*/
                     }
                 }
             }
@@ -125,30 +124,6 @@ void thread_enum_bin(FILE *out, sem_t *f, assg_t *asn, sem_t *a) {
 
 }
 
-/* Function to turn a hand into a string to pass to the J scorer script. */
-/* Location of the J scorer script to whic the hand is passed. */
-/*static*/ char * J_SCORER; // = 
-//#define J_SCORER_INIT   
-//static char * J_SCORER_INIT = "/home/srlang/git/Cribbage/J/scorer_script.ijs ";
-char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-char * stringize(hand_t * hand) {
-    //char *ret = calloc(15, sizeof(char));
-    char * ret = (char *) malloc(sizeof(char)
-            * (15 + (sizeof(J_SCORER)/sizeof(char))) );
-    if (!ret)
-        return NULL;
-    for(int i = 0; i < 4; i++) {
-        int card = hand->cards[i];
-        ret[3*i] = digits[card / 10];
-        ret[(3*i)+1] = digits[card % 10];
-        ret[(3*i)+2] = ' ';
-    }
-    int crib = hand->crib;
-    ret[12] = digits[crib / 10];
-    ret[13] = digits[crib % 10];
-    ret[14] = '\0';
-    return ret;
-}
 
 #define SC_SZ       200
 #define J_SCORER    "/home/srlang/git/Cribbage/J/scorer_script.ijs "
@@ -196,7 +171,10 @@ void thread_enum_table_s(FILE *out, sem_t *o, assg_t *asn, sem_t *a) {
                         sem_wait(o);
                         snprintf(score_cmd, SC_SZ, J_SC_FMT, i, j, k,
                                 l, c);
-                        int score = system(score_cmd);
+                        //int score = system(score_cmd);
+                        hand_t hand = {.cards[0] = i, .cards[1] = j,
+                            .cards[2] = k, .cards[3] = l, .crib=c};
+                        int score = score(&hand);
 #                       ifdef DEBUG_ENUMERATE
                             fprintf(stderr, "score_cmd: [%s]\n", score_cmd);
                             fprintf(stderr, "Score: [%d]\n", score);
