@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "globals.h"
+
 #ifndef SCORER_H
 #define SCORER_H
 
@@ -40,5 +42,8 @@ int type(int card);
 
 /* Find the numerical value of the card (for counting to 15). */
 int value(int card); 
+
+/* Score the hand given */
+unsigned char score(hand_t * hand);
 
 #endif

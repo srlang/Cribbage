@@ -55,17 +55,6 @@ typedef struct thread_arg {
     sem_t * a_lock;
 } targ_t;
 
-typedef unsigned char card_t;
-
-typedef struct hand {
-    card_t cards[4];
-    card_t crib;
-} hand_t;
-
-typedef struct scored_hand {
-    hand_t hand;
-    unsigned char score;
-} scored_t;
 
 #define BEGINNING_ASSIGNER  {.indx = 0}
 
