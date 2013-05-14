@@ -19,15 +19,6 @@
 #include "scorer.h"
 #include <stdlib.h>
 
-/* Values for each given possible score of the hand. */
-#define PAIRS_VALUE     2
-#define FIFTEENS_VALUE  2
-#define RIGHT_JACK_VAL  1
-
-/* Basic information about the cribbage hand. */
-#define HAND_SIZE       4
-#define TOTAL_SIZE      5
-#define CRIB_LOCATION   4
 
 /* Find the suit of the given card. */
 Suits_t suit(card_t card) {
@@ -69,7 +60,27 @@ score_t runs(hand_t * hand) {
 
 /* Score based on number of pairs */
 score_t pairs(hand_t * hand) {
-    return 0;
+    //each_type y
+    score_t * bools = calloc(NUM_TYPES, sizeof(score_t));
+    for(int i = 0; i < HAND_SIZE_CRIB; i++) {
+        bools[hand->cards[i]]++;
+    }
+    int iar = 0;
+    int count = 0;
+    //for_i. each_type y do.
+    for(int i = 0; i < NUM_TYPES; i++) {
+        if (0 == bools[i] && iar >= 3) {
+            break;
+        } else if (0 == bools[i]) {
+            count = 1;
+            iar = 0;
+        }
+        if (bools[i] > 0) {
+            count *= bools[i];
+            iar++;
+        }
+    }
+    return count * (iar >= 3 ? iar : 0);
 }
 
 
