@@ -82,12 +82,13 @@ score_t runs(hand_t * hand) {
 score_t pairs(hand_t * hand) {
     score_t pairs = 0; 
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
+        Cards_t ti = type(hand->cards[i]);
         for(int j = i+1; j < HAND_SIZE_CRIB; j++) {
-            pairs += ( hand->cards[i] == hand->cards[j] 
+            pairs += ( ti == type(hand->cards[j]) 
                     ? 1 : 0 );
         }
     }
-    return pairs;
+    return pairs * PAIRS_VALUE;
 }
 
 
@@ -110,8 +111,8 @@ int main(int argc, char *argv[]) {
     int i, j, k, l, c;
     hand_t hand;
     score_t sc = -1;
-    scanf("%d %d %d %d %d", &i, &j, %k, %l, %c);
-    hand = {.cards[0] = i, .cards[1] = j, .cards[2] = k,
+    scanf("%d %d %d %d %d", &i, &j, &k, &l, &c);
+    hand = (hand_t) {.cards[0] = i, .cards[1] = j, .cards[2] = k,
         .cards[3] = l, .crib = c};
 
 #   ifdef   TEST_PAIRS
