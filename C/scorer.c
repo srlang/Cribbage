@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
     int i, j, k, l, c;
     hand_t hand;
     score_t sc = -1;
-    scanf("%i %i %i %i %i", &i, &j, %k, %l, %c);
+    scanf("%d %d %d %d %d", &i, &j, %k, %l, %c);
     hand = {.cards[0] = i, .cards[1] = j, .cards[2] = k,
         .cards[3] = l, .crib = c};
 
