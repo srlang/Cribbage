@@ -22,7 +22,7 @@ typedef unsigned char card_t;
 typedef unsigned char score_t;
 
 /* Average score of a set of hands */
-typedef unsigned float avgscore_t;
+typedef double avgscore_t;
 
 /* Hold the cards of a hand (includes crib) */
 typedef struct hand {
