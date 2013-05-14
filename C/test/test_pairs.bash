@@ -6,9 +6,9 @@ echo "================================================="
 
 for i in $(seq 1 $npt) ; do 
     echo "----------------------------------"
-    echo "Pair Test $(i):"
-    ../scorer_p <"pair_in$(i).txt" >"pair_aout$(i).txt"
-    d=$(diff "pair_aout$(i).txt" "pair_eout$(i).txt")
+    echo "Pair Test $i:"
+    ../scorer_p <"pair_in$i.txt" >"pair_aout$i.txt"
+    d=$(diff "pair_aout$i.txt" "pair_eout$i.txt")
     if [[ "x$d" == "x" ]] ; then
         echo "Passed"
     else
