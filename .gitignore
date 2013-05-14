@@ -9,3 +9,4 @@ test_scorer/*
 J/score_table.txt
 score_table.txt
 *aout*
+C/scorer_*
