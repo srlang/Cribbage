@@ -23,6 +23,7 @@ clean_test:
 	@rm -v scorer_r
 	@rm -v scorer_j
 	@rm -v scorer_f
+	@rm -v test/*aout*
 
 test_score: test_pairs test_runs test_fifteens test_rightjack
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_SCORE=1 scorer.c -o scorer_s
