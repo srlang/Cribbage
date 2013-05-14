@@ -7,7 +7,7 @@ echo "================================================="
 for i in $(seq 1 $npt) ; do 
     echo "----------------------------------"
     echo "Fifteens Test $(i):"
-    ./scorer_p <"test/fif_in$(i).txt" >"test/fif_aout$(i).txt"
+    ./scorer_f <"test/fif_in$(i).txt" >"test/fif_aout$(i).txt"
     d=$(diff "test/fif_aout$(i).txt" "test/fif_eout$(i).txt")
     if [[ "x$d" == "x" ]] ; then
         echo "Passed"
