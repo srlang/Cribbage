@@ -27,21 +27,21 @@ clean_test:
 
 test_score: test_pairs test_runs test_fifteens test_rightjack
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_SCORE=1 scorer.c -o scorer_s
-	./test_score.bash
+	./test/test_score.bash
 
 test_pairs:
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_PAIRS=1 scorer.c -o scorer_p
-	./test_pairs.bash
+	./test/test_pairs.bash
 
 test_runs:
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_RUNS=1 scorer.c -o scorer_r
-	./test_runs.bash
+	./test/test_runs.bash
 
 test_fifteens:
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_FIFTEENS=1 scorer.c -o scorer_f
-	./test_fifteens.bash
+	./test/test_fifteens.bash
 
 test_rightjack:
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_RIGHTJACK=1 scorer.c -o scorer_j
-	./test_rightjack.bash
+	./test/test_rightjack.bash
 
