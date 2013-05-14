@@ -29,9 +29,29 @@ test_score: test_pairs test_runs test_fifteens test_rightjack
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_SCORE=1 scorer.c -o scorer_s
 	./test/test_score.bash
 
-test_pairs:
+test_pairs: \
+	test_pairs1 \
+	test_pairs2 \
+	test_pairs3 
+
+test_pairs_comp: scorer.c scorer.h globals.h
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_PAIRS=1 scorer.c -o scorer_p
-	./test/test_pairs.bash
+
+
+test_pairs1: test_pairs_comp
+	./scorer_p <test/pairs_in1.txt >test/pairs_aout1.txt
+	diff test/pairs_aout1.txt test/pairs_eout1.txt
+
+
+test_pairs2: test_pairs_comp
+	./scorer_p <test/pairs_in2.txt >test/pairs_aout2.txt
+	diff test/pairs_aout2.txt test/pairs_eout2.txt
+
+
+test_pairs3: test_pairs_comp
+	./scorer_p <test/pairs_in3.txt >test/pairs_aout3.txt
+	diff test/pairs_aout3.txt test/pairs_eout3.txt
+
 
 test_runs:
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_RUNS=1 scorer.c -o scorer_r
