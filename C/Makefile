@@ -13,9 +13,16 @@ enumerate: enumerate.c enumerate.h globals.h
 scorer: scorer.c scorer.h globals.h
 	$(CC) $(CFLAGS) -o scorer scorer.c
 
-clean:
+clean: 
 	@rm -v scorer
 	@rm -v enumerate
+
+clean_test:
+	@rm -v scorer_s
+	@rm -v scorer_p
+	@rm -v scorer_r
+	@rm -v scorer_j
+	@rm -v scorer_f
 
 test_score: test_pairs test_runs test_fifteens test_rightjack
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_SCORE=1 scorer.c -o scorer_s
