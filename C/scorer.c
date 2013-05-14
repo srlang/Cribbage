@@ -55,11 +55,6 @@ score_t right_jack(hand_t * hand) {
 
 /* Method to find and return the number of runs available. */
 score_t runs(hand_t * hand) {
-    return 0;
-}
-
-/* Score based on number of pairs */
-score_t pairs(hand_t * hand) {
     //each_type y
     score_t * bools = calloc(NUM_TYPES, sizeof(score_t));
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
@@ -83,6 +78,18 @@ score_t pairs(hand_t * hand) {
     return count * (iar >= 3 ? iar : 0);
 }
 
+/* Score based on number of pairs */
+score_t pairs(hand_t * hand) {
+    score_t pairs = 0; 
+    for(int i = 0; i < HAND_SIZE_CRIB; i++) {
+        for(int j = i+1; j < HAND_SIZE_CRIB; j++) {
+            pairs += ( hand->cards[i] == hand->cards[j] 
+                    ? 1 : 0 );
+        }
+    }
+    return pairs;
+}
+
 
 /* Find how many combinations of fifteen there are in the hand. */
 score_t fifteens(hand_t * hand) {
@@ -95,3 +102,30 @@ score_t score(hand_t * hand) {
     return right_jack(hand) + runs(hand) 
         + pairs(hand) + fifteens(hand);
 }
+
+
+#ifdef DEBUG_SCORER
+#include <stdio.h>
+int main(int argc, char *argv[]) {
+    int i, j, k, l, c;
+    hand_t hand;
+    score_t sc = -1;
+    scanf("%i %i %i %i %i", &i, &j, %k, %l, %c);
+    hand = {.cards[0] = i, .cards[1] = j, .cards[2] = k,
+        .cards[3] = l, .crib = c};
+
+#   ifdef   TEST_PAIRS
+        sc = pairs(&hand);
+#   elif    TEST_FIFTEENS
+        sc = fifteens(&hand);
+#   elif    TEST_RUNS
+        sc = runs(&hand);
+#   elif    TEST_RIGHTJACK
+        sc = right_jack(&hand);
+#   elif    TEST_SCORE
+        sc = score(&hand);
+#   endif
+    printf("%d\n", (int) sc);
+    return 0;
+}
+#endif
