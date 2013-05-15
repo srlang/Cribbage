@@ -22,12 +22,12 @@
 
 /* Find the suit of the given card. */
 Suits_t suit(card_t card) {
-    return card % NUM_SUITS;
+    return (Suits_t) (card % NUM_SUITS);
 }
 
 /* Find the type (Ace-King) of the given card */
 Cards_t type(card_t card) {
-    return card / NUM_TYPES;
+    return (Cards_t) (card / NUM_SUITS);
 }
 
 /* Find the numerical value of the card (for counting to 15) */
