@@ -24,48 +24,45 @@
 /* Debug flag for nice output and testing */
 //#define DEBUG_SCORER  1
 
-/* Type of the cards and their values. */
-typedef enum Cards {
-    Ace = 0, Two = 1, Three = 2, Four = 3, 
-    Five = 4, Six = 5, Seven = 6, Eight = 7,
-    Nine = 8, Ten = 9, Jack, Queen = 10, King = 11
-} Cards_t;
+#define CRIB_LOC        4
 
-/* Suits of the cards. */
-typedef enum Suits {
-    Hearts, Diamonds, Clubs, Spades
-} Suits_t;
 
 /* Find the suit of the given card. */
 #define NUM_SUITS       4
-Suits_t suit(card_t);
 
-/* Find the type (Ace - King) of the given card. */
-#define NUM_TYPES       12
-Cards_t type(card_t);
+/* Macros to find type and suit */
+#define SUIT(x)     (x % NUM_SUITS)
+#define TYPE(x)     (x / NUM_SUITS)
+
 
 /* Find the numerical value of the card (for counting to 15). */
 #define MIN_NUMVAL      1
 #define MAX_NUMVAL      10
 #define MIN(a,b)        (a < b ? a : b)
 #define MAX(a,b)        (a > b ? a : b)
-score_t value(card_t); 
+#define VALUE(x)        (MAX(MIN_NUMVAL, MIN(MAX_NUM_VAL, TYPE(x) + 1)))
 
 /* Figure out if a hand should get an extra point for a right jack */
-score_t right_jack(hand_t *);
+//score_t right_jack(hand_t *);
+int right_jack(int [HAND_SIZE_CRIB]);
+#define JACK            11
 
 /* Score the number of pairs present in the hand. */
-score_t pairs(hand_t *);
+//score_t pairs(hand_t *);
+int pairs(int [HAND_SIZE_CRIB]);
 #define PAIRS_VALUE     2
 
 /* Find how many points should be given due to runs. */
-score_t runs(hand_t *);
+//score_t runs(hand_t *);
+int runs(int [HAND_SIZE_CRIB]);
 
 /* Score based on combinations of 15. */
-score_t fifteens(hand_t *);
+//score_t fifteens(hand_t *);
+int fifteens(int [HAND_SIZE_CRIB]);
 #define FIFTEENS_VALUE  2
 
 /* Score the hand given */
-score_t score(hand_t *);
+//score_t score(hand_t *);
+int score(int [HAND_SIZE_CRIB]);
 
 #endif
