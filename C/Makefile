@@ -23,7 +23,43 @@ clean_test:
 	@rm -v scorer_r
 	@rm -v scorer_j
 	@rm -v scorer_f
+	@rm -v scorer_t
 	@rm -v test/*aout*
+
+test_type: \
+	test_type1 \
+	test_type2 \
+	test_type3 \
+	test_type4 \
+	test_type5 \
+	test_type6
+
+test_type_comp: scorer.c scorer.h globals.h
+	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_TYPE=1 scorer.c -o scorer_t
+
+test_type1: test_type_comp
+	./scorer_t <test/type_in1.txt >test/type_aout1.txt
+	diff test/type_aout1.txt test/type_eout1.txt
+
+test_type2: test_type_comp
+	./scorer_t <test/type_in2.txt >test/type_aout2.txt
+	diff test/type_aout2.txt test/type_eout2.txt
+
+test_type3: test_type_comp
+	./scorer_t <test/type_in3.txt >test/type_aout3.txt
+	diff test/type_aout3.txt test/type_eout3.txt
+
+test_type4: test_type_comp
+	./scorer_t <test/type_in4.txt >test/type_aout4.txt
+	diff test/type_aout4.txt test/type_eout4.txt
+
+test_type5: test_type_comp
+	./scorer_t <test/type_in5.txt >test/type_aout5.txt
+	diff test/type_aout5.txt test/type_eout5.txt
+
+test_type6: test_type_comp
+	./scorer_t <test/type_in6.txt >test/type_aout6.txt
+	diff test/type_aout6.txt test/type_eout6.txt
 
 test_score: test_pairs test_runs test_fifteens test_rightjack
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_SCORE=1 scorer.c -o scorer_s

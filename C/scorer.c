@@ -18,6 +18,9 @@
 
 #include "scorer.h"
 #include <stdlib.h>
+#ifdef DEBUG_SCORER
+#   include <stdio.h>
+#endif
 
 
 /* Find the suit of the given card. */
@@ -29,6 +32,8 @@ Suits_t suit(card_t card) {
 Cards_t type(card_t card) {
     return (Cards_t) (card / NUM_SUITS);
 }
+
+#define TYPE(x) (x / NUM_SUITS)
 
 /* Find the numerical value of the card (for counting to 15) */
 score_t value(card_t card) {
@@ -62,7 +67,7 @@ score_t runs(hand_t * hand) {
     }
     int iar = 0;
     int count = 0;
-    //for_i. each_type y do.
+    //for_I. EACH_type y do.
     for(int i = 0; i < NUM_TYPES; i++) {
         if (0 == bools[i] && iar >= 3) {
             break;
@@ -82,9 +87,16 @@ score_t runs(hand_t * hand) {
 score_t pairs(hand_t * hand) {
     score_t pairs = 0; 
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
-        Cards_t ti = type(hand->cards[i]);
+        Cards_t ti = TYPE(hand->cards[i]);
         for(int j = i+1; j < HAND_SIZE_CRIB; j++) {
-            pairs += ( ti == type(hand->cards[j]) 
+#           ifdef TEST_PAIRS
+                #define MESSAGE_F "Cards: [a: %d, b: %d, pair: %d," \
+                        "type_a: %d, type_b %d]\n"
+                fprintf(stderr, MESSAGE_F,
+                        i, j, (ti == TYPE(hand->cards[j])), ti, 
+                        TYPE(hand->cards[j]));
+#           endif
+            pairs += ( ti == TYPE(hand->cards[j]) 
                     ? 1 : 0 );
         }
     }
@@ -106,7 +118,6 @@ score_t score(hand_t * hand) {
 
 
 #ifdef DEBUG_SCORER
-#include <stdio.h>
 int main(int argc, char *argv[]) {
     int i, j, k, l, c;
     hand_t hand;
@@ -125,6 +136,10 @@ int main(int argc, char *argv[]) {
         sc = right_jack(&hand);
 #   elif    TEST_SCORE
         sc = score(&hand);
+#   elif    TEST_TYPE
+        //fprintf(stderr, "Using card: %d\n", hand.cards[0]);
+        sc = type(hand.cards[0]);
+        //fprintf(stderr, "Type: %d\n", sc);
 #   endif
     printf("%d\n", (int) sc);
     return 0;
