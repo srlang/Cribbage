@@ -89,15 +89,47 @@ test_pairs3: test_pairs_comp
 	diff test/pairs_aout3.txt test/pairs_eout3.txt
 
 
-test_runs:
+test_runs: \
+	test_runs1 \
+	test_runs2 \
+	test_runs3
+
+test_runs_comp: scorer.c scorer.h globals.h
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_RUNS=1 scorer.c -o scorer_r
-	./test/test_runs.bash
+
+test_runs1: test_runs_comp
+	./scorer_r <test/runs_in1.txt >test/runs_aout1.txt
+	diff test/runs_aout1.txt test/runs_eout1.txt
+
+test_runs2: test_runs_comp
+	./scorer_r <test/runs_in2.txt >test/runs_aout2.txt
+	diff test/runs_aout2.txt test/runs_eout2.txt
+
+test_runs3: test_runs_comp
+	./scorer_r <test/runs_in3.txt >test/runs_aout3.txt
+	diff test/runs_aout3.txt test/runs_eout3.txt
 
 test_fifteens:
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_FIFTEENS=1 scorer.c -o scorer_f
 	./test/test_fifteens.bash
 
-test_rightjack:
+test_rightjack: \
+	test_rj1 \
+	test_rj2 \
+	test_rj3
+
+test_rj_comp: scorer.c scorer.h globals.h
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_RIGHTJACK=1 scorer.c -o scorer_j
-	./test/test_rightjack.bash
+
+test_rj1: test_rj_comp
+	./scorer_j <test/rj_in1.txt >test/rj_aout1.txt
+	diff test/rj_aout1.txt test/rj_eout1.txt
+
+test_rj2: test_rj_comp
+	./scorer_j <test/rj_in2.txt >test/rj_aout2.txt
+	diff test/rj_aout2.txt test/rj_eout2.txt
+
+test_rj3: test_rj_comp
+	./scorer_j <test/rj_in3.txt >test/rj_aout3.txt
+	diff test/rj_aout3.txt test/rj_eout3.txt
 

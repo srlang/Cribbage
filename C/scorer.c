@@ -63,10 +63,15 @@ score_t runs(hand_t * hand) {
     //each_type y
     score_t * bools = calloc(NUM_TYPES, sizeof(score_t));
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
-        bools[hand->cards[i]]++;
+        bools[type(hand->cards[i])]++;
     }
+    #ifdef TEST_RUNS
+        fprintf(stderr, "each_type: [%d, %d, %d, %d, %d, %d, %d, ...]\n",
+                bools[0], bools[1], bools[2], bools[3], bools[4], bools[5],
+                bools[6]);
+    #endif
     int iar = 0;
-    int count = 0;
+    int count = 1;
     //for_I. EACH_type y do.
     for(int i = 0; i < NUM_TYPES; i++) {
         if (0 == bools[i] && iar >= 3) {
@@ -80,6 +85,8 @@ score_t runs(hand_t * hand) {
             iar++;
         }
     }
+    //prevent memory leaks (important for the larger tasks ahead)
+    free(bools);
     return count * (iar >= 3 ? iar : 0);
 }
 
