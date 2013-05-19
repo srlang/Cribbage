@@ -7,9 +7,11 @@ J/printf.ijs
 test_scorer/
 test_scorer/*
 J/score_table.txt
-score_table.txt
+score_table*.txt
 *aout*
 C/scorer_*
+C/tabler_*
 C/enumerate_*
 *.o
+C/tabler
 tabler
