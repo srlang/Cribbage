@@ -67,9 +67,25 @@ test_type6: test_type_comp
 	./scorer_t <test/type_in6.txt >test/type_aout6.txt
 	diff test/type_aout6.txt test/type_eout6.txt
 
-test_score: test_pairs test_runs test_fifteens test_rightjack
+test_score: test_pairs test_runs test_fifteens test_rightjack \
+	test_score1 \
+	test_score2 \
+	test_score3
+
+test_score_comp: scorer.c scorer.h globals.h
 	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_SCORE=1 scorer.c -o scorer_s
-	./test/test_score.bash
+
+test_score1: test_score_comp
+	./scorer_s <test/score_in1.txt >test/score_aout1.txt
+	diff test/score_aout1.txt test/score_eout1.txt
+
+test_score2: test_score_comp
+	./scorer_s <test/score_in2.txt >test/score_aout2.txt
+	diff test/score_aout2.txt test/score_eout2.txt
+
+test_score3: test_score_comp
+	./scorer_s <test/score_in3.txt >test/score_aout3.txt
+	diff test/score_aout3.txt test/score_eout3.txt
 
 test_pairs: \
 	test_pairs1 \
