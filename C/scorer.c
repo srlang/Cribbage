@@ -29,11 +29,11 @@ Suits_t suit(card_t card) {
 }
 
 /* Find the type (Ace-King) of the given card */
+#define TYPE(x) (x / NUM_SUITS)
 Cards_t type(card_t card) {
     return (Cards_t) (card / NUM_SUITS);
 }
 
-#define TYPE(x) (x / NUM_SUITS)
 
 /* Find the numerical value of the card (for counting to 15) */
 score_t value(card_t card) {
@@ -62,7 +62,7 @@ score_t right_jack(hand_t * hand) {
 score_t runs(hand_t * hand) {
     //each_type y
     score_t * bools = calloc(NUM_TYPES, sizeof(score_t));
-    if (!bools) return 0;
+    if (!bools) return 30;
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
         bools[type(hand->cards[i])]++;
     }
@@ -118,7 +118,7 @@ score_t pairs(hand_t * hand) {
 score_t fifteens(hand_t * hand) {
     //using the algorithm Marshall taught me
     int * a = (int *) calloc(FIF_BOOL_SIZE, sizeof(int));
-    if (!a) return 0;
+    if (!a) return 30;
     a[0] = 1;
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
         card_t c = value(hand->cards[i]);
@@ -128,6 +128,13 @@ score_t fifteens(hand_t * hand) {
         for(int j = FIF_BOOL_SIZE - 1; j >= c; j--) {
             a[j] += a[j-c];
         }
+#       ifdef TEST_FIFTEENS
+            fprintf(stderr, "i=%2d, c=%2d: [", i, c);
+            for(int i = 0; i < FIF_BOOL_SIZE-1; i++) {
+                fprintf(stderr, "%2d, ", a[i]);
+            }
+            fprintf(stderr, "%2d]\n", a[FIF_BOOL_SIZE-1]);
+#       endif
     }
     int retval = a[FIF_BOOL_LOC];
     free(a);
