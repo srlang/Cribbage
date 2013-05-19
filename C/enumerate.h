@@ -42,8 +42,8 @@
  * Only defined if not included in compile flags
  */
 #ifndef THREAD_COUNT
-# define THREAD_COUNT   10
-//# define THREAD_COUNT   4
+//#   define THREAD_COUNT   10
+#   define THREAD_COUNT   4
 #endif
 #define SHARE_INTRA     0
 #define SHARE_INTER     1

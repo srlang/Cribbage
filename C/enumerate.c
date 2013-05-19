@@ -65,9 +65,9 @@ void enumerate(FILE *o, sem_t *ol, assg_t *a, sem_t *al) {
                         if (c == i || c == j || c == k || c ==l) 
                             continue;
 #                       ifdef ENUM_TABLE
+                            sem_wait(ol);
                             hand_t eh = {.cards[0] = i, .cards[1] = j,
                                 .cards[2] = k, .cards[3] = l, .crib = c};
-                            sem_wait(ol);
                             fprintf(o, "%2d %2d %2d %2d ; %2d ; %2d\n",
                                     i, j, k, l, c, score(&eh));
                             sem_post(ol);
