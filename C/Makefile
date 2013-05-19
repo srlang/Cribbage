@@ -7,6 +7,10 @@ CFLAGS = -Wall -std=c99 -g
 
 all: scorer.o enumerate.o
 
+tabler: enumerate.c enumerate.h globals.h scorer.o
+	$(CC) $(CFLAGS) -o tabler -lpthread -DENUM_TABLE \
+		enumerate.c scorer.o
+
 enumerate.o: enumerate.c enumerate.h globals.h
 	$(CC) $(CFLAGS) -lpthread -c -o enumerate.o enumerate.c
 
