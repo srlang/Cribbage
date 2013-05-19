@@ -5,10 +5,16 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -g 
 
-all: scorer enumerator
+all: scorer enumerate
+
+enumerate.o: enumerate.c enumerate.h globals.h
+	$(CC) $(CFLAGS) -lpthread -c -o enumerate.o enumerate.c
 
 enumerate: enumerate.c enumerate.h globals.h
 	$(CC) $(CFLAGS) -lpthread -o enumerate enumerate.c
+
+scorer.o: scorer.c scorer.h globals.h
+	$(CC) $(CFLAGS) -c -o scorer.o scorer.c
 
 scorer: scorer.c scorer.h globals.h
 	$(CC) $(CFLAGS) -o scorer scorer.c
@@ -109,10 +115,6 @@ test_runs3: test_runs_comp
 	./scorer_r <test/runs_in3.txt >test/runs_aout3.txt
 	diff test/runs_aout3.txt test/runs_eout3.txt
 
-test_fifteens:
-	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_FIFTEENS=1 scorer.c -o scorer_f
-	./test/test_fifteens.bash
-
 test_rightjack: \
 	test_rj1 \
 	test_rj2 \
@@ -132,4 +134,24 @@ test_rj2: test_rj_comp
 test_rj3: test_rj_comp
 	./scorer_j <test/rj_in3.txt >test/rj_aout3.txt
 	diff test/rj_aout3.txt test/rj_eout3.txt
+
+test_fifteens: \
+	test_fif1 \
+	test_fif2 \
+	test_fif3 
+
+test_fif_comp: scorer.c scorer.h globals.h
+	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_FIFTEENS=1 scorer.c -o scorer_f
+
+test_fif1: test_fif_comp
+	./scorer_f <test/fif_in1.txt >test/fif_aout1.txt
+	diff test/fif_aout1.txt test/fif_eout1.txt
+
+test_fif2: test_fif_comp
+	./scorer_f <test/fif_in2.txt >test/fif_aout2.txt
+	diff test/fif_aout2.txt test/fif_eout2.txt
+
+test_fif3: test_fif_comp
+	./scorer_f <test/fif_in3.txt >test/fif_aout3.txt
+	diff test/fif_aout3.txt test/fif_eout3.txt
 
