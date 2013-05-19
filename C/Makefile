@@ -5,7 +5,7 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -g 
 
-all: scorer enumerate
+all: scorer.o enumerate.o
 
 enumerate.o: enumerate.c enumerate.h globals.h
 	$(CC) $(CFLAGS) -lpthread -c -o enumerate.o enumerate.c
@@ -30,6 +30,7 @@ clean_test:
 	@rm -v scorer_j
 	@rm -v scorer_f
 	@rm -v scorer_t
+	@rm -v scorer_v
 	@rm -v test/*aout*
 
 test_type: \
