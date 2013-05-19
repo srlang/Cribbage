@@ -113,17 +113,20 @@ score_t pairs(hand_t * hand) {
 
 
 /* Find how many combinations of fifteen there are in the hand. */
-#define FIF_BOOL_SIZE       16
-#define FIF_BOOL_LOC        (FIF_BOOL_SIZE - 1)
+#define FIF_BOOL_LOC        15
+#define FIF_BOOL_SIZE       (FIF_BOOL_LOC + 1)
 score_t fifteens(hand_t * hand) {
-    //using algorithm Marshall taught me
-    int * a = (int *) calloc(16, sizeof(int));
+    //using the algorithm Marshall taught me
+    int * a = (int *) calloc(FIF_BOOL_SIZE, sizeof(int));
     if (!a) return 0;
     a[0] = 1;
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
         card_t c = value(hand->cards[i]);
-        for(int j = c; j < 16; j++) {
-            a[j]++;
+        // a = a + (-c) |.!.0 a
+        //Must tackle from right to left to avoid "cascading" a number
+        //through the array
+        for(int j = FIF_BOOL_SIZE - 1; j >= c; j--) {
+            a[j] += a[j-c];
         }
     }
     int retval = a[FIF_BOOL_LOC];
@@ -162,6 +165,10 @@ int main(int argc, char *argv[]) {
         //fprintf(stderr, "Using card: %d\n", hand.cards[0]);
         sc = type(hand.cards[0]);
         //fprintf(stderr, "Type: %d\n", sc);
+#   elif    TEST_VALUES
+        fprintf(stderr, "Using card: %d\n", hand.cards[4]);
+        sc = value(hand.cards[4]);
+        fprintf(stderr, "Value: %d\n", sc);
 #   endif
     printf("%d\n", (int) sc);
     return 0;

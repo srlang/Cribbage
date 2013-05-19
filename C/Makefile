@@ -155,3 +155,23 @@ test_fif3: test_fif_comp
 	./scorer_f <test/fif_in3.txt >test/fif_aout3.txt
 	diff test/fif_aout3.txt test/fif_eout3.txt
 
+test_value: \
+	test_val1 \
+	test_val2 \
+	test_val3 
+
+test_val_comp: scorer.c scorer.h globals.h
+	$(CC) $(CFLAGS) -DDEBUG_SCORER -DTEST_VALUES=1 scorer.c -o scorer_v
+
+test_val1: test_val_comp
+	./scorer_v <test/val_in1.txt >test/val_aout1.txt
+	diff test/val_aout1.txt test/val_eout1.txt
+
+test_val2: test_val_comp
+	./scorer_v <test/val_in2.txt >test/val_aout2.txt
+	diff test/val_aout2.txt test/val_eout2.txt
+
+test_val3: test_val_comp
+	./scorer_v <test/val_in3.txt >test/val_aout3.txt
+	diff test/val_aout3.txt test/val_eout3.txt
+
