@@ -12,3 +12,4 @@ score_table.txt
 C/scorer_*
 C/enumerate_*
 *.o
+tabler
