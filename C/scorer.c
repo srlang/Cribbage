@@ -62,6 +62,7 @@ score_t right_jack(hand_t * hand) {
 score_t runs(hand_t * hand) {
     //each_type y
     score_t * bools = calloc(NUM_TYPES, sizeof(score_t));
+    if (!bools) return 0;
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
         bools[type(hand->cards[i])]++;
     }
@@ -112,8 +113,22 @@ score_t pairs(hand_t * hand) {
 
 
 /* Find how many combinations of fifteen there are in the hand. */
+#define FIF_BOOL_SIZE       16
+#define FIF_BOOL_LOC        (FIF_BOOL_SIZE - 1)
 score_t fifteens(hand_t * hand) {
-    return 0;   
+    //using algorithm Marshall taught me
+    int * a = (int *) calloc(16, sizeof(int));
+    if (!a) return 0;
+    a[0] = 1;
+    for(int i = 0; i < HAND_SIZE_CRIB; i++) {
+        card_t c = value(hand->cards[i]);
+        for(int j = c; j < 16; j++) {
+            a[j]++;
+        }
+    }
+    int retval = a[FIF_BOOL_LOC];
+    free(a);
+    return retval;   
 }
 
 
