@@ -176,8 +176,8 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Using card: %d\n", hand.cards[4]);
         sc = value(hand.cards[4]);
         fprintf(stderr, "Value: %d\n", sc);
-#   endif
+#   endif /* TEST_* */
     printf("%d\n", (int) sc);
     return 0;
 }
-#endif
+#endif /* DEBUG_SCORER */
