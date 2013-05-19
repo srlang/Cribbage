@@ -10,3 +10,5 @@ J/score_table.txt
 score_table.txt
 *aout*
 C/scorer_*
+C/enumerate_*
+*.o
