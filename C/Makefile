@@ -202,3 +202,28 @@ test_val5: test_val_comp
 	./scorer_v <test/val_in5.txt >test/val_aout5.txt
 	diff test/val_aout5.txt test/val_eout5.txt
 
+
+test_enum: \
+	test_enum1 \
+	test_enum2 \
+	test_enum3
+
+test_enum_comp: enumerate.c enumerate.h globals.h scorer.o
+	$(CC) $(CFLAGS) -DDEBUG_ENUMERATE -lpthread -o enumerate_t \
+		enumerate.c scorer.o
+
+test_enum_comp_t: enumerate.c enumerate.h globals.h scorer.o
+	$(CC) $(CFLAGS) -DDEBUG_ENUMERATE -DENUM_TABLE -lpthread -o enumerate_tt \
+		enumerate.c scorer.o
+
+test_enum1: test_enum_comp
+	./enumerate_t >test/enum_aout1.txt
+
+test_enum2: test_enum_comp
+	./enumerate_t test/enum_aout2.txt
+
+test_enum3: test_enum_comp_t
+	./enumerate_tt >test/enum_aout3.txt
+
+test_enum4: test_enum_comp_t
+	./enumerate_tt test/enum_aout4.txt
