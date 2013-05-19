@@ -6,7 +6,7 @@
  * Global DEBUG flag to turn on other debug flags 
  * specific to the other modules. 
  */
-#define DEBUG       1
+//#define DEBUG       1
 
 
 /* Size of the hand */
