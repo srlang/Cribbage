@@ -1,3 +1,6 @@
+C/:
+    - enumerator keeps popping up with 255's randomly at the 
+        k-level loop
 
 Meta:
     - Perhaps make a meta-agent that decides when to begin
