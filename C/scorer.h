@@ -22,7 +22,9 @@
 #define SCORER_H
 
 /* Debug flag for nice output and testing */
-//#define DEBUG_SCORER  1
+#ifdef DEBUG
+#   define DEBUG_SCORER  1
+#endif
 
 /* Type of the cards and their values. */
 typedef enum Cards {
