@@ -128,7 +128,7 @@ score_t fifteens(hand_t * hand) {
     }
     int retval = a[FIF_BOOL_LOC];
     free(a);
-    return retval;   
+    return FIFTEENS_VALUE * retval;   
 }
 
 
