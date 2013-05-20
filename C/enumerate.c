@@ -85,7 +85,7 @@ void enumerate(FILE *o, sem_t *ol, assg_t *a, sem_t *al) {
     }
 }
 
-
+#ifdef ENUM_MAIN
 /* Actually execute the enumerator functionality. */
 int main(int argc, char * argv[]) {
     //figure out where we will be writing the data to
@@ -122,5 +122,6 @@ int main(int argc, char * argv[]) {
     //exit value
     return 0;
 }
+#endif /* ENUM_MAIN */
 
 

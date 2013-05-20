@@ -33,6 +33,7 @@
 
 #ifdef DEBUG_ENUMERATE
 #   define NUM_CARDS    (NUM_CARDS_S)
+#   define ENUM_MAIN    1
 #else
 #   define NUM_CARDS    (NUM_CARDS_R)
 #endif
