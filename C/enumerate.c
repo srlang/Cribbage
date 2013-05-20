@@ -59,7 +59,7 @@ void enumerate(FILE *o, sem_t *ol, assg_t *a, sem_t *al) {
     for(card_t i = get_next_bin(a, al); i < NUM_CARDS; 
             i = get_next_bin(a, al)) {
         for(card_t j = i+1; j < NUM_CARDS; j++) {
-            for(card_t k = j+1; j < NUM_CARDS; k++) {
+            for(card_t k = j+1; k < NUM_CARDS; k++) {
                 for(card_t l = k+1; l < NUM_CARDS; l++) {
                     for(card_t c = 0; c < NUM_CARDS; c++) {
                         if (c == i || c == j || c == k || c ==l) 
