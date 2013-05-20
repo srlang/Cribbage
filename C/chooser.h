@@ -22,8 +22,13 @@
 
 
 #ifdef DEBUG
-#   define DEBUG_CHOOSER
+#   define DEBUG_CHOOSER    1
 #endif /* DEBUG */
+
+#ifdef DEBUG_CHOOSER
+#   define CHOOSER_MAIN     1
+#endif
+
 
 #define MAX_SUITS       1
 #define MAX_TYPES       2

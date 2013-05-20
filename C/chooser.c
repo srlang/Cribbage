@@ -77,3 +77,10 @@ card_t * hton(char const * str, int len) {
     return NULL;
 }
 
+
+#ifdef CHOOSER_MAIN
+int main(int argc, char *argv[]) { 
+
+    return 0;
+}
+#endif /* CHOOSER_MAIN */
