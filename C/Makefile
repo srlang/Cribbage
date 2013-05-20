@@ -9,13 +9,13 @@ all: scorer.o enumerate.o
 
 tabler: enumerate.c enumerate.h globals.h scorer.o
 	$(CC) $(CFLAGS) -o tabler -lpthread -DENUM_TABLE \
-		enumerate.c scorer.o
+		-DENUM_MAIN enumerate.c scorer.o
 
 enumerate.o: enumerate.c enumerate.h globals.h
 	$(CC) $(CFLAGS) -lpthread -c -o enumerate.o enumerate.c
 
 enumerate: enumerate.c enumerate.h globals.h
-	$(CC) $(CFLAGS) -lpthread -o enumerate enumerate.c
+	$(CC) $(CFLAGS) -lpthread -o enumerate enumerate.c -DENUM_MAIN
 
 scorer.o: scorer.c scorer.h globals.h
 	$(CC) $(CFLAGS) -c -o scorer.o scorer.c
@@ -231,3 +231,57 @@ test_enum3: test_enum_comp_t
 
 test_enum4: test_enum_comp_t
 	./enumerate_tt test/enum_aout4.txt
+
+
+test_chooser: \
+	test_chooser1 \
+	test_chooser2 \
+	test_chooser3 
+	
+test_chooser_comp: chooser.c chooser.h globals.h
+	$(CC) $(CFLAGS) -DDEBUG_CHOOSER -o chooser_t chooser.c
+
+test_chooser1: test_chooser_comp
+	./chooser_t <test/ch_in1.txt
+
+test_chooser2: test_chooser_comp
+	./chooser_t <test/ch_in2.txt
+
+test_chooser3: test_chooser_comp
+	./chooser_t <test/ch_in3.txt
+
+test_ntoh: \
+	test_ntoh1 \
+	test_ntoh2 \
+	test_ntoh3
+
+test_hton: \
+	test_hton1 \
+	test_hton2 \
+	test_hton3
+
+test_hton_comp: chooser.c chooser.h globals.h
+	$(CC) $(CFLAGS) -DDEBUG_CHOOSER -DTEST_HTON -o chooser_h \
+		chooser.c
+
+test_ntoh_comp: chooser.c chooser.h globals.h
+	$(CC) $(CFLAGS) -DDEBUG_CHOOSER -DTEST_HTON -o chooser_n \
+		chooser.c
+
+test_hton1:
+	@echo "Unimplemented"
+
+test_hton2:
+	@echo "Unimplemented"
+
+test_hton3:
+	@echo "Unimplemented"
+
+test_ntoh1:
+	@echo "Unimplemented"
+
+test_hton2:
+	@echo "Unimplemented"
+
+test_hton3:
+	@echo "Unimplemented"
