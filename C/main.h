@@ -45,17 +45,45 @@ typedef double worth_t;
 
 
 /* Struct to provide the thread arguments to the checking threads */
-#define TAKE_NUM        4
-#define THROW_NUM       2
+#define TAKE_NUM                4
+#define THROW_NUM               2
 typedef struct main_thread_args {
     card_t taken[TAKE_NUM];
     card_t thrown[THROW_NUM];
-    worth_t * result;
-} m_targ_t;
+    casn_t * assigner;
+} marg_t;
+
+typedef struct main_thread_return {
+    worth_t score;
+    int combo_mask;
+} rarg_t;
+
+/* Masks to describe all possible 4-card take possibilities. */
+#define NUM_MASKS           15
+static unsigned char masks[] = {
+    15, 23, 27, 29, 30, 39, 43, 45, 46, 51, 
+    53, 54, 57, 58, 60
+};
+
+#define BEGIN_ASSIGNER      {0}
+typedef struct combination_assigner {
+    int indx;
+} casn_t;
+
+
+#define PROMPT                  "Cards: >"
+#define MAX_INPUT_LENGTH        25
+#define MAX_INPUT_INDIV         4
 
 
 /* Symbolically stake a claim to the main() function */
 int main(int, char **);
+
+/* Thread function to find the maximum hand in the set. */
+void * find_max(void *);
+
+/* Translate a string into a card. */
+card_t get_card(char *);
 
 
 #endif /* _MAIN_H_ */
