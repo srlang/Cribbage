@@ -32,7 +32,8 @@
 
 
 /* Get the next value to use for multi-threaded loop */
-int get_next(assg_t *asn, sem_t *lock) {
+int get_next(assg_t *asn, sem_t *lock) 
+{
     int ret = 0;
     sem_wait(lock);
     ret = asn->indx;
@@ -42,12 +43,14 @@ int get_next(assg_t *asn, sem_t *lock) {
 }
 
 /* Get the next binary value to use for a loop */
-card_t get_next_bin(assg_t *asn, sem_t *lock) {
+card_t get_next_bin(assg_t *asn, sem_t *lock) 
+{
     return (card_t) (0xFF & get_next(asn, lock));
 }
 
 /* Thread handler function */
-void * enumerate_h(void *args) {
+void * enumerate_h(void *args) 
+{
     targ_t * ta = (targ_t *) args;
     enumerate(ta->out, ta->o_lock, ta->assg, ta->a_lock);
     return NULL;
@@ -55,7 +58,8 @@ void * enumerate_h(void *args) {
 
 
 /* Enumerate and print out all possible hands. */
-void enumerate(FILE *o, sem_t *ol, assg_t *a, sem_t *al) {
+void enumerate(FILE *o, sem_t *ol, assg_t *a, sem_t *al) 
+{
     for(card_t i = get_next_bin(a, al); i < NUM_CARDS; 
             i = get_next_bin(a, al)) {
         for(card_t j = i+1; j < NUM_CARDS; j++) {
@@ -87,7 +91,8 @@ void enumerate(FILE *o, sem_t *ol, assg_t *a, sem_t *al) {
 
 #ifdef ENUM_MAIN
 /* Actually execute the enumerator functionality. */
-int main(int argc, char * argv[]) {
+int main(int argc, char * argv[]) 
+{
     //figure out where we will be writing the data to
     FILE * stream = stdout;
     if (argc > 1) {

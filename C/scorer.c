@@ -24,19 +24,22 @@
 
 
 /* Find the suit of the given card. */
-Suits_t suit(card_t card) {
+Suits_t suit(card_t card) 
+{
     return (Suits_t) (card % NUM_SUITS);
 }
 
 /* Find the type (Ace-King) of the given card */
 #define TYPE(x) (x / NUM_SUITS)
-Cards_t type(card_t card) {
+Cards_t type(card_t card) 
+{
     return (Cards_t) (card / NUM_SUITS);
 }
 
 
 /* Find the numerical value of the card (for counting to 15) */
-score_t value(card_t card) {
+score_t value(card_t card) 
+{
     Cards_t div = type(card) + 1;
     return MAX(MIN_NUMVAL, MIN(MAX_NUMVAL, div));
 }
@@ -46,7 +49,8 @@ score_t value(card_t card) {
  * Function to determine whether the hand should get 
  * an extra point for having the right jack.
  */
-score_t right_jack(hand_t * hand) {
+score_t right_jack(hand_t * hand) 
+{
     Suits_t cs = suit(hand->crib);
     for(card_t i = 0; i < HAND_SIZE; i++) {
         if (type(hand->cards[i]) == Jack 
@@ -59,7 +63,8 @@ score_t right_jack(hand_t * hand) {
 
 
 /* Method to find and return the number of runs available. */
-score_t runs(hand_t * hand) {
+score_t runs(hand_t * hand) 
+{
     //each_type y
     score_t * bools = calloc(NUM_TYPES, sizeof(score_t));
     if (!bools) return 30;
@@ -92,7 +97,8 @@ score_t runs(hand_t * hand) {
 }
 
 /* Score based on number of pairs */
-score_t pairs(hand_t * hand) {
+score_t pairs(hand_t * hand) 
+{
     score_t pairs = 0; 
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
         Cards_t ti = TYPE(hand->cards[i]);
@@ -115,7 +121,8 @@ score_t pairs(hand_t * hand) {
 /* Find how many combinations of fifteen there are in the hand. */
 #define FIF_BOOL_LOC        15
 #define FIF_BOOL_SIZE       (FIF_BOOL_LOC + 1)
-score_t fifteens(hand_t * hand) {
+score_t fifteens(hand_t * hand) 
+{
     //using the algorithm Marshall taught me
     int * a = (int *) calloc(FIF_BOOL_SIZE, sizeof(int));
     if (!a) return 30;
@@ -150,7 +157,8 @@ score_t score(hand_t * hand) {
 
 
 #ifdef DEBUG_SCORER
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
     int i, j, k, l, c;
     hand_t hand;
     score_t sc = -1;

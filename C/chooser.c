@@ -29,7 +29,8 @@
 
 
 /* Locate a string within an array of strings. */
-int find(char **fi, int fil, char *tf, int tfl) {
+int find(char **fi, int fil, char *tf, int tfl) 
+{
     int i = FIND_ERROR;
     for(i = 0; i < fil; i++) {
         if (0 == strncmp(fi[i], tf, tfl)) {
@@ -41,7 +42,8 @@ int find(char **fi, int fil, char *tf, int tfl) {
 
 
 /* Helper function to transform a single card to a string. */
-char * ntoh_h(card_t card) {
+char * ntoh_h(card_t card) 
+{
     char * n = calloc(MAX_NTOH, sizeof(char));
     strncpy(n, TYPES[type(card)], MAX_SUITS);
     strncpy(n, SUITS[suit(card)], MAX_TYPES);
@@ -51,7 +53,8 @@ char * ntoh_h(card_t card) {
 /* Translate any number of cards to a string */
 /* Just for side note: can be done by recursively concatenating, 
  * but with manual memory management, may be a bit trickier. */
-char * ntoh(card_t * card, int len) {
+char * ntoh(card_t * card, int len) 
+{
     char * ret = calloc((MAX_NTOH * len) + 1, sizeof(char));
     if (!ret) return NULL;
     for(int i = 0; i < len; i++) {
@@ -69,17 +72,20 @@ char * ntoh(card_t * card, int len) {
 }
 
 
-card_t * hton_h(const char const * str) {
+card_t * hton_h(const char const * str) 
+{
     return NULL;
 }
 
-card_t * hton(char const * str, int len) {
+card_t * hton(char const * str, int len) 
+{
     return NULL;
 }
 
 
 #ifdef CHOOSER_MAIN
-int main(int argc, char *argv[]) { 
+int main(int argc, char *argv[]) 
+{ 
 
     return 0;
 }
