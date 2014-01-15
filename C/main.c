@@ -40,31 +40,44 @@ int main(int argc, char * argv[])
          *f = input + (5 * MAX_INPUT_INDIV);
     casn_t asn = BEGIN_ASSIGNER;
     card_t ca, cb, cc, cd, ce, cf;
-    do {
+    pthread_t threads[THREAD_NUM];
+    //do {
         printf(PROMPT);
         i = scanf("%s %s %s %s %s", a, b, c, d, e, f);
         ca = get_card(a), cb = get_card(b), cc = get_card(c),
            cd = get_card(d), ce = get_card(e), cf = get_card(f);
-        for(int i = 0; i < NUM_MASKS; i++) {
-            marg_t * m = (marg_t *) malloc(sizeof(marg_t));
-            m->assigner = &asn;
+        card_t cards[] = {ca, cb, cc, cd, ce, cf};
+        for(int j = 0; j < NUM_MASKS; j++) {
+            marg_t *m = (marg_t *) malloc(sizeof(marg_t));
             if (m) {
-                //add the cards to the appropriate arrays
+                m->assigner = &asn;
+                int takenum = 0;
+                int cribnum = 0;
+                for (int k = 0; k < NUM_CARDS; k++) {
+                    if (bit(masks[j], k)) {
+                        m->taken[takenum++] = cards[k];
+                    } else {
+                        m->thrown[cribnum++] = cards[k];
+                    }
+                }
+
             }
         }
-    } while (i);
+    //} while (i);
     free(input);
     return 0;
 }
 #endif /* ! DEBUG */
 
 
-void * find_max(void * args) 
+void *find_max(void *args) 
 {
     //translate arguments to a readable form
     //and get memory space for a return argument
     marg_t * margs = (marg_t *) args;
     rarg_t * ret = (rarg_t *) malloc(sizeof(rarg_t));
+
+    // TODO: actual evaluation
 
     //free the thread arguments (no longer necessary);
     free(margs);
