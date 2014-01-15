@@ -1,0 +1,22 @@
+chooser:
+    - slight misnomer and may very well be removed 
+    - Functions and headers to interact with user and choose the optimal
+        hand.
+    - nothing seems too polished or tested, so it'll probably be rewritten 
+        later and probably renamed too.
+
+enumerate:
+    - multi-threaded enumerator
+    - simply displays all possible cribbage hands with console output.
+    - not really helpful
+    - good for semaphore and pthread refresher, though
+
+scorer:
+    - actual scoring functions to score a hand of cribbage
+    - function of note: 
+        score_t score(hand_t *hand)
+            returns a score for a given hand pointed to 
+
+main:
+    - load of junk poorly thought up and thrown together to make a UI
+    - should be stripped to what was said in the TODO file
