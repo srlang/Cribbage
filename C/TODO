@@ -1,0 +1,8 @@
+Main method should be rewritten so that it just calls a single function
+    with the hand's cards, a number of threads allowed to be created to help
+    the calculation and returns the arrangement with the greatest possibility 
+    of getting the highest points (what the J script already does)
+    
+    Main function itself will just do some basic I/O operations now
+    Will eventually extend to allow a full game to be played with an opponent.
+        (hopefully; if I get around to it)
