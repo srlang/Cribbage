@@ -43,14 +43,21 @@
 /* The worth of the hand taken as a whole */
 typedef double worth_t;
 
+#define BEGIN_ASSIGNER      {0, NULL}
+typedef struct combination_assigner {
+    int indx;
+    sem_t *lock;
+} casn_t;
+
 
 /* Struct to provide the thread arguments to the checking threads */
+#define NUM_CARDS               6
 #define TAKE_NUM                4
 #define THROW_NUM               2
 typedef struct main_thread_args {
     card_t taken[TAKE_NUM];
     card_t thrown[THROW_NUM];
-    casn_t * assigner;
+    casn_t *assigner;
 } marg_t;
 
 typedef struct main_thread_return {
@@ -58,17 +65,12 @@ typedef struct main_thread_return {
     int combo_mask;
 } rarg_t;
 
-/* Masks to describe all possible 4-card take possibilities. */
+/* Masks to describe all possible 4-card take possibilities from 6 cards. */
 #define NUM_MASKS           15
 static unsigned char masks[] = {
     15, 23, 27, 29, 30, 39, 43, 45, 46, 51, 
     53, 54, 57, 58, 60
 };
-
-#define BEGIN_ASSIGNER      {0}
-typedef struct combination_assigner {
-    int indx;
-} casn_t;
 
 
 #define PROMPT                  "Cards: >"
@@ -84,6 +86,9 @@ void * find_max(void *);
 
 /* Translate a string into a card. */
 card_t get_card(char *);
+
+/* Determine if a bit is a 1 in a number at a given position. */
+int bit(int num, int pos);
 
 
 #endif /* _MAIN_H_ */
