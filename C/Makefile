@@ -280,8 +280,8 @@ test_hton3:
 test_ntoh1:
 	@echo "Unimplemented"
 
-test_hton2:
+test_ntoh2:
 	@echo "Unimplemented"
 
-test_hton3:
+test_ntoh3:
 	@echo "Unimplemented"
