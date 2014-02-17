@@ -37,15 +37,15 @@ static char *TYPES[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9",
     "10", "J", "Q", "K"};
 
 /* Translate human-readable string to machine array of cards. */
-card_t * hton(char const *, int);
+card_t *hton(char const *, int);
 
 /* Translate machine array of cards to human-readable string. */
 #define MAX_NTOH        4
 #define MAX_NTOH_S      "4"
-char * ntoh(card_t *, int len);
+char *ntoh(card_t *, int len);
 
 /* Find a string within an array of strings */
 #define FIND_ERROR      -1
-int find(char ** fi, int fil, char * tf, int tfl);
+int find(char **fi, int fil, char *tf, int tfl);
 
 #endif /* _CHOOSER_H_ */

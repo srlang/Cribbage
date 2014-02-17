@@ -49,9 +49,9 @@ card_t get_next_bin(assg_t *asn, sem_t *lock)
 }
 
 /* Thread handler function */
-void * enumerate_h(void *args) 
+void *enumerate_h(void *args) 
 {
-    targ_t * ta = (targ_t *) args;
+    targ_t *ta = (targ_t *) args;
     enumerate(ta->out, ta->o_lock, ta->assg, ta->a_lock);
     return NULL;
 }
@@ -91,10 +91,10 @@ void enumerate(FILE *o, sem_t *ol, assg_t *a, sem_t *al)
 
 #ifdef ENUM_MAIN
 /* Actually execute the enumerator functionality. */
-int main(int argc, char * argv[]) 
+int main(int argc, char *argv[]) 
 {
     //figure out where we will be writing the data to
-    FILE * stream = stdout;
+    FILE *stream = stdout;
     if (argc > 1) {
         FILE * s = fopen(argv[1], "w+");
         //fail if the file has not be opened

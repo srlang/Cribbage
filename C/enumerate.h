@@ -56,16 +56,16 @@ typedef struct assigner {
 } assg_t;
 
 typedef struct thread_arg {
-    FILE * out;
-    sem_t * o_lock;
-    assg_t * assg;
-    sem_t * a_lock;
+    FILE *out;
+    sem_t *o_lock;
+    assg_t *assg;
+    sem_t *a_lock;
 } targ_t;
 
 
 #define BEGINNING_ASSIGNER  {.indx = 0}
 
-void * enumerate_h(void *);
+void *enumerate_h(void *);
 void enumerate(FILE *, sem_t *, assg_t *, sem_t *);
 
 

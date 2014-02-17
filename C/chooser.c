@@ -44,7 +44,7 @@ int find(char **fi, int fil, char *tf, int tfl)
 /* Helper function to transform a single card to a string. */
 char * ntoh_h(card_t card) 
 {
-    char * n = calloc(MAX_NTOH, sizeof(char));
+    char *n = calloc(MAX_NTOH, sizeof(char));
     strncpy(n, TYPES[type(card)], MAX_SUITS);
     strncpy(n, SUITS[suit(card)], MAX_TYPES);
     return n;
@@ -53,12 +53,12 @@ char * ntoh_h(card_t card)
 /* Translate any number of cards to a string */
 /* Just for side note: can be done by recursively concatenating, 
  * but with manual memory management, may be a bit trickier. */
-char * ntoh(card_t * card, int len) 
+char *ntoh(card_t *card, int len) 
 {
-    char * ret = calloc((MAX_NTOH * len) + 1, sizeof(char));
+    char *ret = calloc((MAX_NTOH * len) + 1, sizeof(char));
     if (!ret) return NULL;
     for(int i = 0; i < len; i++) {
-        char * card_s = ntoh_h(card[i]);
+        char *card_s = ntoh_h(card[i]);
         strncpy(ret + (i*MAX_NTOH), card_s, MAX_NTOH);
         //replace intermittent null terminators with spaces
         for(int j = i * MAX_NTOH; j < (i+1) * MAX_NTOH; j++) {
@@ -72,12 +72,12 @@ char * ntoh(card_t * card, int len)
 }
 
 
-card_t * hton_h(const char const * str) 
+card_t *hton_h(const char const *str) 
 {
     return NULL;
 }
 
-card_t * hton(char const * str, int len) 
+card_t *hton(char const *str, int len) 
 {
     return NULL;
 }

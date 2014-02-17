@@ -29,10 +29,10 @@
 
 
 #ifndef DEBUG
-int main(int argc, char * argv[]) 
+int main(int argc, char *argv[]) 
 {
     int i = 1;
-    char * input = (char *) malloc(MAX_INPUT_LENGTH * sizeof(char));
+    char *input = (char *) malloc(MAX_INPUT_LENGTH * sizeof(char));
     char *a = input, *b = input+MAX_INPUT_INDIV, 
          *c = input + (2 * MAX_INPUT_INDIV), 
          *d = input + (3 * MAX_INPUT_INDIV),
@@ -74,8 +74,8 @@ void *find_max(void *args)
 {
     //translate arguments to a readable form
     //and get memory space for a return argument
-    marg_t * margs = (marg_t *) args;
-    rarg_t * ret = (rarg_t *) malloc(sizeof(rarg_t));
+    marg_t *margs = (marg_t *) args;
+    rarg_t *ret = (rarg_t *) malloc(sizeof(rarg_t));
 
     // TODO: actual evaluation
 

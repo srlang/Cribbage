@@ -82,7 +82,7 @@ static unsigned char masks[] = {
 int main(int, char **);
 
 /* Thread function to find the maximum hand in the set. */
-void * find_max(void *);
+void *find_max(void *);
 
 /* Translate a string into a card. */
 card_t get_card(char *);

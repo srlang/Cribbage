@@ -66,7 +66,7 @@ score_t right_jack(hand_t * hand)
 score_t runs(hand_t * hand) 
 {
     //each_type y
-    score_t * bools = calloc(NUM_TYPES, sizeof(score_t));
+    score_t *bools = calloc(NUM_TYPES, sizeof(score_t));
     if (!bools) return 30;
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
         bools[type(hand->cards[i])]++;
@@ -97,7 +97,7 @@ score_t runs(hand_t * hand)
 }
 
 /* Score based on number of pairs */
-score_t pairs(hand_t * hand) 
+score_t pairs(hand_t *hand) 
 {
     score_t pairs = 0; 
     for(int i = 0; i < HAND_SIZE_CRIB; i++) {
