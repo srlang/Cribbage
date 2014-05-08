@@ -6,7 +6,7 @@ CRIB_LOCATION = 4
 JACK = 10
 
 # Determine if the hand is valid size and values
-def validHand(hand):
+def valid_hand(hand):
     s = len(hand)
     b = True
     for card in hand:
@@ -24,12 +24,12 @@ def value(card):
     return floor(card / 4)
 
 # Determine what number the card has for adding purposes
-def numericValue(card):
+def numeric_value(card):
     return min(10, 1+value(card))
 
 # TODO 
 def pairs(hand):
-    assert validHand(hand)
+    assert valid_hand(hand)
     count = 0
     orig = y[:]
     while True:
@@ -40,30 +40,30 @@ def pairs(hand):
 
 # TODO
 def fifteens(hand):
-    assert validHand(hand)
+    assert valid_hand(hand)
     return 0
 
-def numberEqual(arr, elem):
+def number_equal(arr, elem):
     count = 0
     for i in arr:
         count += 1 if i == elem else 0
     return count
 
-def eachType(hand):
-    assert validHand(hand)
+def each_type(hand):
+    assert valid_hand(hand)
     h = hand[:]
     for i in range(len(hand)):
         h[i] = value(hand[i])
     adj = 13 * [0]
     for i in range(13):
-        adj[i] = numberEqual(h, i)
+        adj[i] = number_equal(h, i)
     return adj
 
 def runs(hand):
-    assert validHand(hand)
+    assert valid_hand(hand)
     iar = 0
     count = 1 
-    for i in eachType(hand):
+    for i in each_type(hand):
         if (i == 0) and (iar >= 3):
             break
         elif i == 0:
@@ -77,8 +77,8 @@ def runs(hand):
     else 
         return 0
 
-def rightJack(hand):
-    assert validHand(hand)
+def right_jack(hand):
+    assert valid_hand(hand)
     crib = suit(hand[CRIB_LOCATION])
     h = hand[:4]
     for i in h:
@@ -89,10 +89,10 @@ def rightJack(hand):
 
 # Retrieve the score of a hand
 def score(hand):
-    if not validHand(hand):
+    if not valid_hand(hand):
         raise(HandError('Invalid Input Hand'))
     p = pairs(hand)
     f = fifteens(hand)
     r = runs(hand)
-    fj = rightJack(hand)
+    fj = right_jack(hand)
     return p + f + r + rj
