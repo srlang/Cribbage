@@ -74,15 +74,15 @@ def runs(hand):
             iar += 1
     if 3 <= iar:
         return count * iar
-    else 
+    else:
         return 0
 
 def right_jack(hand):
     assert valid_hand(hand)
-    crib = suit(hand[CRIB_LOCATION])
+    crib_suit = suit(hand[CRIB_LOCATION])
     h = hand[:4]
     for i in h:
-        if suit(i) == crib:
+        if suit(i) == crib_suit:
             return 1
     return 0
 
