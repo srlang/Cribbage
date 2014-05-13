@@ -49,8 +49,13 @@ class TestScorer(unittest.TestCase):
         pass
 
     def test_each_type(self):
-        # 
-        pass
+        h1 = [1, 5, 10, 13, 17]
+        #     A  2  3  4  5  6  7  8  9 10  J  Q  K
+        e1 = [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+        h2 = [20, 25, 26, 28, 29]
+        e2 = [0, 0, 0, 0, 0, 1, 2, 2, 0, 0, 0, 0, 0]
+        self.assertEquals(e1, each_type(h1))
+        self.assertEquals(e2, each_type(h2))
 
     def test_number_equal(self):
         arr = [1, 1, 2, 3, 5, 5, 5, 5]
@@ -60,7 +65,12 @@ class TestScorer(unittest.TestCase):
         self.assertEquals(4, number_equal(arr, 5))
 
     def test_right_jack(self):
-        pass
+        h1 = [40, 41, 42, 43, 1]
+        h2 = [1, 2, 3, 4, 5]
+        h3 = [40, 45, 42, 43, 1]
+        self.assertEquals(1, right_jack(h1))
+        self.assertEquals(0, right_jack(h2))
+        self.assertEquals(0, right_jack(h3))
 
     def test_score(self):
         pass

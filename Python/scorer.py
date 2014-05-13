@@ -82,7 +82,7 @@ def right_jack(hand):
     crib_suit = suit(hand[CRIB_LOCATION])
     h = hand[:4]
     for i in h:
-        if suit(i) == crib_suit:
+        if suit(i) == crib_suit and value(i) == JACK:
             return 1
     return 0
 
